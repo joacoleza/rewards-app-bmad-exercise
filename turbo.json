@@ -18,6 +18,10 @@
     "test:e2e": {},
     "test:ci": {
       "dependsOn": ["build"]
+    },
+    "//#update-badges": {
+      "dependsOn": ["test"],
+      "cache": false
     }
   }
 }

@@ -11,6 +11,7 @@
     "test:unit": "turbo test:unit",
     "test:e2e": "turbo test:e2e",
     "test:ci": "turbo test:ci",
+    "update-badges": "node scripts/update-badges.mjs",
     "format": "prettier --write ."
   },
   "devDependencies": {
