@@ -61,6 +61,18 @@ pnpm turbo test
 └── .env.example
 ```
 
+## BMAD Customizations
+
+A custom **story-pipeline** workflow is configured in [_bmad/_config/custom/workflow-sprint-run-all.yaml](_bmad/_config/custom/workflow-sprint-run-all.yaml). It chains story creation through implementation in a single run:
+
+1. **SM creates story** — drafts a story file from the backlog
+2. **SM approves story** — reviews acceptance criteria and scope
+3. **Dev implements** — writes code and tests per the story spec
+4. **Dev code review** — runs adversarial code review on the changes
+5. **Dev marks done** — confirms all ACs met and review passed
+
+The workflow is wired to the SM agent via [_bmad/_config/agents/bmm-sm.customize.yaml](_bmad/_config/agents/bmm-sm.customize.yaml) as the `story-pipeline` menu trigger.
+
 ## License
 
 This project is an exercise/demo and is not licensed for production use.
