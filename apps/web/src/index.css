@@ -1,13 +1,59 @@
-*,
-*::before,
-*::after {
+@import "tailwindcss";
+
+/* ── Design Tokens (UX-DR2, UX-DR3, UX-DR4) ── */
+@theme {
+  /* Primary palette – Indigo/Slate */
+  --color-primary: #4F46E5;
+  --color-primary-hover: #4338CA;
+  --color-primary-light: #E0E7FF;
+  --color-bg: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-border: #E2E8F0;
+  --color-text: #0F172A;
+  --color-text-muted: #64748B;
+
+  /* Semantic */
+  --color-success: #16A34A;
+  --color-warning: #F59E0B;
+  --color-error: #DC2626;
+  --color-info: #0EA5E9;
+
+  /* Focus ring */
+  --color-focus: #6366F1;
+
+  /* Spacing (4px base) */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+
+  /* Sidebar */
+  --sidebar-width: 240px;
+}
+
+/* ── Base styles ── */
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
+html {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
 body {
-  margin: 0;
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* ── Focus ring (UX-DR16) ── */
+*:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
 }
