@@ -98,7 +98,8 @@ A custom **story-pipeline** workflow is configured in [_bmad/_config/custom/work
 2. **SM approves story** — reviews acceptance criteria and scope
 3. **Dev implements** — writes code and tests per the story spec
 4. **Dev code review** — runs adversarial code review on the changes
-5. **Dev marks done** — confirms all ACs met and review passed
+5. **QA verifies** — generates and runs automated tests against acceptance criteria
+6. **Dev marks done** — confirms all ACs met, review passed, and QA verified
 
 The workflow is wired to the SM agent via [_bmad/_config/agents/bmm-sm.customize.yaml](_bmad/_config/agents/bmm-sm.customize.yaml) as the `story-pipeline` menu trigger.
 

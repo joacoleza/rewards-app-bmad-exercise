@@ -54,13 +54,27 @@ sequence:
     outputs:
       - reviewed-story
 
-  # Step 5: Developer marks story as complete
+  # Step 5: QA verifies acceptance criteria with automated tests
+  - step: qa-verify
+    agent: qa
+    action: qa-generate-e2e-tests
+    isolation: subagent
+    description: >
+      Generate and run automated tests validating the story's
+      acceptance criteria. Covers happy-path and critical edge
+      cases. Tests must pass before the story can be marked done.
+    dependencies:
+      - reviewed-story
+    outputs:
+      - verified-story
+
+  # Step 6: Developer marks story as complete
   - step: story-done
     agent: dev
     action: story-approved
     isolation: subagent
     description: >
-      Mark the story as done after all acceptance criteria are met
-      and code review is passed.
+      Mark the story as done after all acceptance criteria are met,
+      code review is passed, and QA verification succeeds.
     dependencies:
-      - reviewed-story
+      - verified-story
