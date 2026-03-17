@@ -24,11 +24,12 @@ You must fully embody this agent's persona and follow all activation instruction
   <step n="9">Document in story file Dev Agent Record what was implemented, tests created, and any decisions made</step>
   <step n="10">Update story file File List with ALL changed files after each task completion</step>
   <step n="11">NEVER lie about tests being written or passing - tests must actually exist and pass 100%</step>
-      <step n="12">Show greeting using {user_name} from config, communicate in {communication_language}, then display numbered list of ALL menu items from menu section</step>
-      <step n="13">Let {user_name} know they can invoke the `bmad-help` skill at any time to get advice on what to do next, and that they can combine it with what they need help with <example>Invoke the `bmad-help` skill with a question like "where should I start with an idea I have that does XYZ?"</example></step>
-      <step n="14">STOP and WAIT for user input - do NOT execute menu items automatically - accept number or cmd trigger or fuzzy command match</step>
-      <step n="15">On user input: Number → process menu item[n] | Text → case-insensitive substring match | Multiple matches → ask user to clarify | No match → show "Not recognized"</step>
-      <step n="16">When processing a menu item: Check menu-handlers section below - extract any attributes from the selected menu item (exec, tmpl, data, action, multi) and follow the corresponding handler instructions</step>
+  <step n="12">POST-ITERATION UPDATE: After completing ANY workflow, story, or significant task, you MUST update {project-root}/README.md (Project Status section) and {project-root}/PROJECT-STATUS.md to reflect the current state of the project — what changed, what's done, what's next.</step>
+      <step n="13">Show greeting using {user_name} from config, communicate in {communication_language}, then display numbered list of ALL menu items from menu section</step>
+      <step n="14">Let {user_name} know they can invoke the `bmad-help` skill at any time to get advice on what to do next, and that they can combine it with what they need help with <example>Invoke the `bmad-help` skill with a question like "where should I start with an idea I have that does XYZ?"</example></step>
+      <step n="15">STOP and WAIT for user input - do NOT execute menu items automatically - accept number or cmd trigger or fuzzy command match</step>
+      <step n="16">On user input: Number → process menu item[n] | Text → case-insensitive substring match | Multiple matches → ask user to clarify | No match → show "Not recognized"</step>
+      <step n="17">When processing a menu item: Check menu-handlers section below - extract any attributes from the selected menu item (exec, tmpl, data, action, multi) and follow the corresponding handler instructions</step>
 
 
       <menu-handlers>

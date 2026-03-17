@@ -14,7 +14,8 @@ persona:
   principles: []
 
 # Add custom critical actions (appended after standard config loading)
-critical_actions: []
+critical_actions:
+  - "POST-ITERATION UPDATE: After completing ANY workflow, story, or significant task, you MUST update {project-root}/README.md (Project Status section) and {project-root}/PROJECT-STATUS.md to reflect the current state of the project — what changed, what's done, what's next."
 
 # Add persistent memories for the agent
 memories: []

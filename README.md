@@ -63,6 +63,8 @@ pnpm turbo test
 
 ## BMAD Customizations
 
+### Story Pipeline Workflow
+
 A custom **story-pipeline** workflow is configured in [_bmad/_config/custom/workflow-sprint-run-all.yaml](_bmad/_config/custom/workflow-sprint-run-all.yaml). It chains story creation through implementation in a single run:
 
 1. **SM creates story** — drafts a story file from the backlog
@@ -72,6 +74,10 @@ A custom **story-pipeline** workflow is configured in [_bmad/_config/custom/work
 5. **Dev marks done** — confirms all ACs met and review passed
 
 The workflow is wired to the SM agent via [_bmad/_config/agents/bmm-sm.customize.yaml](_bmad/_config/agents/bmm-sm.customize.yaml) as the `story-pipeline` menu trigger.
+
+### Auto-Update Project Status
+
+All agents have a `critical_actions` customization that requires updating `README.md` and `PROJECT-STATUS.md` after completing any workflow, story, or significant task — keeping project status always current. Configured in each agent's customize yaml under [_bmad/_config/agents/](_bmad/_config/agents/).
 
 ## License
 
