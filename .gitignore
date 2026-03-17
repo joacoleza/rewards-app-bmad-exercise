@@ -1,0 +1,31 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Cursor
+.cursor/
+
+# Claude
+.claude/
+
+# BMAD local memory (user-specific config)
+_bmad/_memory/
+
+# Node (future)
+node_modules/
+dist/
+build/
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
