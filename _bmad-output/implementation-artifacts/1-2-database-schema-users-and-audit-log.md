@@ -1,6 +1,6 @@
 # Story 1.2: Database Schema — Users & Audit Log
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -24,53 +24,53 @@ So that subsequent features have a reliable, secure data foundation.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Create users table schema in Drizzle (AC: #1)
-  - [ ] 1.1 Create packages/db/src/schema/users.ts
-  - [ ] 1.2 Define users table with: id (serial PK), email (varchar(255), unique, not null), password_hash (varchar(255), not null), role (pgEnum: 'employee' | 'manager', not null), created_at (timestamp with time zone, defaultNow())
-  - [ ] 1.3 Create user_role pgEnum (`user_role` with values 'employee', 'manager')
-  - [ ] 1.4 Add index on `email` column: `idx_users_email`
+- [x] Task 1: Create users table schema in Drizzle (AC: #1)
+  - [x] 1.1 Create packages/db/src/schema/users.ts
+  - [x] 1.2 Define users table with: id (serial PK), email (varchar(255), unique, not null), password_hash (varchar(255), not null), role (pgEnum: 'employee' | 'manager', not null), created_at (timestamp with time zone, defaultNow())
+  - [x] 1.3 Create user_role pgEnum (`user_role` with values 'employee', 'manager')
+  - [x] 1.4 Add index on `email` column: `idx_users_email`
 
-- [ ] Task 2: Create audit_logs table schema in Drizzle (AC: #2)
-  - [ ] 2.1 Create packages/db/src/schema/auditLogs.ts
-  - [ ] 2.2 Define audit_logs table with: id (serial PK), actor_id (integer, references users.id), action (varchar(50), not null), entity_type (varchar(50), not null), entity_id (integer, not null), payload (jsonb, nullable), created_at (timestamp with time zone, defaultNow())
-  - [ ] 2.3 Add composite index on (entity_id, entity_type): `idx_audit_logs_entity`
+- [x] Task 2: Create audit_logs table schema in Drizzle (AC: #2)
+  - [x] 2.1 Create packages/db/src/schema/auditLogs.ts
+  - [x] 2.2 Define audit_logs table with: id (serial PK), actor_id (integer, references users.id), action (varchar(50), not null), entity_type (varchar(50), not null), entity_id (integer, not null), payload (jsonb, nullable), created_at (timestamp with time zone, defaultNow())
+  - [x] 2.3 Add composite index on (entity_id, entity_type): `idx_audit_logs_entity`
 
-- [ ] Task 3: Create schema index and type exports (AC: #5)
-  - [ ] 3.1 Create packages/db/src/schema/index.ts — re-export all schemas
-  - [ ] 3.2 Create packages/db/src/types/index.ts — export inferred types using Drizzle's `$inferSelect` and `$inferInsert`
-  - [ ] 3.3 Export types: User, NewUser, AuditLog, NewAuditLog
-  - [ ] 3.4 Update packages/db/src/index.ts to export client, schemas, and types
+- [x] Task 3: Create schema index and type exports (AC: #5)
+  - [x] 3.1 Create packages/db/src/schema/index.ts — re-export all schemas
+  - [x] 3.2 Create packages/db/src/types/index.ts — export inferred types using Drizzle's `$inferSelect` and `$inferInsert`
+  - [x] 3.3 Export types: User, NewUser, AuditLog, NewAuditLog
+  - [x] 3.4 Update packages/db/src/index.ts to export client, schemas, and types
 
-- [ ] Task 4: Create database client (AC: #4, #5)
-  - [ ] 4.1 Create packages/db/src/client.ts
-  - [ ] 4.2 Initialize pg Pool using DATABASE_URL env var
-  - [ ] 4.3 Create and export Drizzle instance with schema
-  - [ ] 4.4 Ensure client is importable from apps/api
+- [x] Task 4: Create database client (AC: #4, #5)
+  - [x] 4.1 Create packages/db/src/client.ts
+  - [x] 4.2 Initialize pg Pool using DATABASE_URL env var
+  - [x] 4.3 Create and export Drizzle instance with schema
+  - [x] 4.4 Ensure client is importable from apps/api
 
-- [ ] Task 5: Create append-only permissions script (AC: #3)
-  - [ ] 5.1 Create scripts/setup-db-permissions.sql
-  - [ ] 5.2 Grant only INSERT and SELECT on audit_logs to the app database role
-  - [ ] 5.3 Explicitly REVOKE UPDATE and DELETE on audit_logs
-  - [ ] 5.4 Add comments explaining the append-only rationale for audit trail compliance (NFR10)
+- [x] Task 5: Create append-only permissions script (AC: #3)
+  - [x] 5.1 Create scripts/setup-db-permissions.sql
+  - [x] 5.2 Grant only INSERT and SELECT on audit_logs to the app database role
+  - [x] 5.3 Explicitly REVOKE UPDATE and DELETE on audit_logs
+  - [x] 5.4 Add comments explaining the append-only rationale for audit trail compliance (NFR10)
 
-- [ ] Task 6: Verify drizzle-kit push works (AC: #4)
-  - [ ] 6.1 Ensure drizzle.config.ts reads DATABASE_URL from env
-  - [ ] 6.2 Add `db:push` script to packages/db/package.json: `drizzle-kit push`
-  - [ ] 6.3 Add `db:generate` script: `drizzle-kit generate`
-  - [ ] 6.4 Test that `pnpm --filter db db:push` creates both tables in PostgreSQL
+- [x] Task 6: Verify drizzle-kit push works (AC: #4)
+  - [x] 6.1 Ensure drizzle.config.ts reads DATABASE_URL from env
+  - [x] 6.2 Add `db:push` script to packages/db/package.json: `drizzle-kit push`
+  - [x] 6.3 Add `db:generate` script: `drizzle-kit generate`
+  - [x] 6.4 Test that `pnpm --filter db db:push` creates both tables in PostgreSQL
 
-- [ ] Task 7: Create seed script (AC: #6)
-  - [ ] 7.1 Create scripts/seed.ts
-  - [ ] 7.2 Install bcryptjs and @types/bcryptjs in packages/db (or root scripts)
-  - [ ] 7.3 Implement idempotent seed: upsert 1 manager (admin@bmad.com / password123) and 2 employees (employee1@bmad.com, employee2@bmad.com)
-  - [ ] 7.4 Hash passwords with bcryptjs (12 rounds) — same algorithm as production auth
-  - [ ] 7.5 Add `db:seed` script to root package.json or packages/db
-  - [ ] 7.6 Verify script runs without errors on both empty and pre-seeded databases
+- [x] Task 7: Create seed script (AC: #6)
+  - [x] 7.1 Create packages/db/scripts/seed.ts
+  - [x] 7.2 Install bcryptjs and @types/bcryptjs in packages/db
+  - [x] 7.3 Implement idempotent seed: upsert 1 manager (admin@bmad.com / password123) and 2 employees (employee1@bmad.com, employee2@bmad.com)
+  - [x] 7.4 Hash passwords with bcryptjs (12 rounds) — same algorithm as production auth
+  - [x] 7.5 Add `db:seed` script to packages/db
+  - [x] 7.6 Verify script runs without errors on both empty and pre-seeded databases
 
-- [ ] Task 8: Write tests (AC: #1, #2, #5)
-  - [ ] 8.1 Create packages/db/src/schema/users.test.ts — validate schema structure
-  - [ ] 8.2 Create packages/db/src/schema/auditLogs.test.ts — validate schema structure
-  - [ ] 8.3 Test that all expected types are exported from packages/db
+- [x] Task 8: Write tests (AC: #1, #2, #5)
+  - [x] 8.1 Create packages/db/src/schema/users.test.ts — validate schema structure
+  - [x] 8.2 Create packages/db/src/schema/auditLogs.test.ts — validate schema structure
+  - [x] 8.3 Test that all expected types are exported from packages/db
 
 ## Dev Notes
 
@@ -270,20 +270,38 @@ Claude Opus 4.6 (GitHub Copilot)
 - bcryptjs is used for seed script AND will be the same package for production auth (Story 1.3). Consistency is critical.
 - The setup-db-permissions.sql script is for documentation/manual application — it configures PostgreSQL roles which may require superuser access. In local dev with Docker, this can be applied via docker-compose init scripts or manually.
 - Drizzle column definitions use Drizzle v0.45.x API. Check for breaking changes if version differs.
+- **Implementation complete (2026-03-17):** All 8 tasks implemented and verified.
+- All schema definitions follow architecture-specified naming conventions (snake_case DB, camelCase TS).
+- db:push verified against live PostgreSQL — both tables created with correct columns, indexes, FK constraints.
+- Seed script moved to packages/db/scripts/seed.ts (instead of root scripts/) for proper module resolution within pnpm workspace.
+- Seed verified idempotent: ran twice, no duplicates, ON CONFLICT DO NOTHING pattern.
+- Password hashes verified: bcrypt $2b$12$ prefix confirms 12 rounds.
+- 28 unit tests covering schema structure, column properties, indexes, FK, enum values, and type exports.
+- Full monorepo test suite (30 tests) passes with zero regressions.
 
 ### File List
 
-Files to create/modify:
-- `packages/db/src/schema/users.ts` (create)
-- `packages/db/src/schema/auditLogs.ts` (create)
-- `packages/db/src/schema/index.ts` (create)
-- `packages/db/src/types/index.ts` (create)
-- `packages/db/src/client.ts` (create)
-- `packages/db/src/index.ts` (modify — add real exports)
-- `packages/db/drizzle.config.ts` (modify — point to schema)
-- `packages/db/src/schema/users.test.ts` (create)
-- `packages/db/src/schema/auditLogs.test.ts` (create)
-- `packages/db/migrations/.gitkeep` (create)
-- `scripts/seed.ts` (create)
-- `scripts/setup-db-permissions.sql` (create)
-- `packages/db/package.json` (modify — add db:push, db:generate scripts)
+Files created:
+- `packages/db/src/schema/users.ts`
+- `packages/db/src/schema/auditLogs.ts`
+- `packages/db/src/schema/index.ts`
+- `packages/db/src/types/index.ts`
+- `packages/db/src/client.ts`
+- `packages/db/src/schema/users.test.ts`
+- `packages/db/src/schema/auditLogs.test.ts`
+- `packages/db/src/index.test.ts`
+- `packages/db/migrations/.gitkeep`
+- `packages/db/vitest.config.ts`
+- `packages/db/scripts/seed.ts`
+- `scripts/setup-db-permissions.sql`
+
+Files modified:
+- `packages/db/src/index.ts` (replaced placeholder with real exports)
+- `packages/db/drizzle.config.ts` (pointed schema to src/schema/index.ts, out to ./migrations)
+- `packages/db/package.json` (added test, db:seed scripts; added bcryptjs, tsx, vitest deps)
+- `pnpm-lock.yaml` (dependency updates)
+
+### Change Log
+
+- **2026-03-17:** Story 1.2 implemented — users table, audit_logs table, Drizzle client, type exports, append-only permissions SQL, seed script, 28 unit tests. All ACs verified.
+- **2026-03-18:** Code review findings addressed — 2 HIGH (DATABASE_URL validation + test pool leak), 3 MEDIUM (pool cleanup, duplicate unique constraint, explicit FK onDelete), 3 LOW (redundant exports, misleading seed log, non-null assertion). All 30 monorepo tests pass.

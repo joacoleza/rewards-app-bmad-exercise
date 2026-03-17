@@ -4,7 +4,21 @@ Employee peer-recognition and rewards web app built using the [BMAD methodology]
 
 ## Project Status
 
-**Story 1.1 done** — Monorepo scaffolded with Turborepo + pnpm workspaces. Frontend (React 19 / Vite), backend (Fastify 5), database package (Drizzle ORM), and shared types package are all wired up. Health endpoint, Docker Compose for PostgreSQL, and Vitest tests are in place. **Next up:** Story 1.2 (Database Schema — Users & Audit Log). See [PROJECT-STATUS.md](PROJECT-STATUS.md) for full details.
+**Overall: 2 / 21 stories done (10%)**
+
+```
+Epic 1 — Foundation & Auth      ██░░░░░░░░  2/6
+Epic 2 — User Management        ░░░░░░░░░░  0/3
+Epic 3 — Nomination Workflow    ░░░░░░░░░░  0/5
+Epic 4 — Approval Workflow      ░░░░░░░░░░  0/4
+Epic 5 — Audit Trail            ░░░░░░░░░░  0/3
+```
+
+**Latest completed:** Story 1.2 — Database Schema (Users & Audit Log)
+
+**Next up:** Story 1.3 — Backend Authentication API
+
+See [PROJECT-STATUS.md](PROJECT-STATUS.md) for full details.
 
 ## Tech Stack
 
@@ -36,14 +50,20 @@ docker compose -f docker-compose.dev.yml up db -d
 # 3. Copy environment variables
 cp .env.example .env
 
-# 4. Start dev servers (web on :5173, api on :3001)
+# 4. Push database schema
+pnpm --filter @rewards-app/db db:push
+
+# 5. Seed default users
+pnpm --filter @rewards-app/db db:seed
+
+# 6. Start dev servers (web on :5173, api on :3001)
 pnpm turbo dev
 
-# 5. Verify health endpoint
+# 7. Verify health endpoint
 curl http://localhost:3001/api/health
 # → { "status": "ok" }
 
-# 6. Run tests
+# 8. Run tests
 pnpm turbo test
 ```
 

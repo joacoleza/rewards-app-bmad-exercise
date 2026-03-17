@@ -1,2 +1,8 @@
-// Placeholder — actual schema will be defined in Story 1.2
-export const DB_PLACEHOLDER = 'db-package-initialized';
+// Database client
+export { db, pool } from './client.js';
+
+// Schemas
+export * from './schema/index.js';
+
+// Types
+export type { User, NewUser, AuditLog, NewAuditLog } from './types/index.js';
