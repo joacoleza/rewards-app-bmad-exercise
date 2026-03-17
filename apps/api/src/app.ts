@@ -2,7 +2,9 @@ import Fastify from 'fastify';
 import envPlugin from './plugins/env.js';
 import cookiePlugin from './plugins/cookie.js';
 import corsPlugin from './plugins/cors.js';
+import authPlugin from './plugins/auth.js';
 import authRoutes from './routes/auth/index.js';
+import protectedRoutes from './routes/protected/index.js';
 import { AppError } from '@rewards-app/shared';
 
 export function buildApp(opts?: { skipEnv?: boolean }) {
@@ -36,6 +38,11 @@ export function buildApp(opts?: { skipEnv?: boolean }) {
   // CORS depends on env (needs CORS_ORIGIN)
   if (!opts?.skipEnv) {
     app.register(corsPlugin);
+  }
+
+  // Auth plugin (requires env for JWT_SECRET)
+  if (!opts?.skipEnv) {
+    app.register(authPlugin);
   }
 
   // ------ Centralized Error Handler ------
@@ -91,6 +98,9 @@ export function buildApp(opts?: { skipEnv?: boolean }) {
 
   // Auth routes
   app.register(authRoutes, { prefix: '/api/auth' });
+
+  // Protected test routes (RBAC validation)
+  app.register(protectedRoutes, { prefix: '/api/protected' });
 
   return app;
 }
