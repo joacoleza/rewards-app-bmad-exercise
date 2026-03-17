@@ -1,29 +1,28 @@
 # Rewards App — BMAD Exercise
 
-![Coverage](https://img.shields.io/badge/coverage-47%25-yellow)
-![Tests](https://img.shields.io/badge/tests-30_passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-61_passing-brightgreen)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue?logo=typescript&logoColor=white)
 ![Node](https://img.shields.io/badge/node-22_LTS-339933?logo=node.js&logoColor=white)
 ![BMAD](https://img.shields.io/badge/BMAD-v6.2.0-purple)
-![Stories](https://img.shields.io/badge/stories-2%2F21_(10%25)-yellow)
+![Stories](https://img.shields.io/badge/stories-6%2F21_(29%25)-yellow)
 
 Employee peer-recognition and rewards web app built using the [BMAD methodology](https://github.com/bmadcode/BMAD-METHOD) (v6.2.0). Employees nominate peers for meaningful contributions, managers approve nominations, and rewards are issued as gift cards.
 
 ## Project Status
 
-**Overall: 2 / 21 stories done (10%)**
+**Overall: 6 / 21 stories done (29%)**
 
 ```
-Epic 1 — Foundation & Auth  ███░░░░░░░  2/6
+Epic 1 — Foundation & Auth  ██████████  6/6  ✅
 Epic 2 — User Management    ░░░░░░░░░░  0/3
 Epic 3 — Nomination Workflow░░░░░░░░░░  0/5
 Epic 4 — Approval Workflow  ░░░░░░░░░░  0/4
 Epic 5 — Audit Trail        ░░░░░░░░░░  0/3
 ```
 
-**Latest completed:** Story 1.2 — Database Schema (Users & Audit Log)
+**Latest completed:** Story 1.6 — Frontend Login & Protected Routing (Epic 1 complete!)
 
-**Next up:** Story 1.3 — Backend Authentication API
+**Next up:** Story 2.1 — Backend User Management API
 
 See [PROJECT-STATUS.md](PROJECT-STATUS.md) for full details.
 

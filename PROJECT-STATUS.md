@@ -1,6 +1,6 @@
 # Project Status
 
-**BMAD Stage:** Implementation — Epic 1 in progress
+**BMAD Stage:** Implementation — Epic 1 complete, Epic 2 next
 
 ## Current Sprint
 
@@ -8,16 +8,16 @@
 |-------|-------|--------|
 | 1.1 | Monorepo Initialization & Dev Environment | **Done** ✅ |
 | 1.2 | Database Schema — Users & Audit Log | **Done** ✅ |
-| 1.3 | Backend Authentication API | Ready for Dev |
-| 1.4 | Backend Role-Based Access Control | Backlog |
-| 1.5 | Frontend App Shell & Design System | Backlog |
-| 1.6 | Frontend Login & Protected Routing | Backlog |
+| 1.3 | Backend Authentication API | **Done** ✅ |
+| 1.4 | Backend Role-Based Access Control | **Done** ✅ |
+| 1.5 | Frontend App Shell & Design System | **Done** ✅ |
+| 1.6 | Frontend Login & Protected Routing | **Done** ✅ |
 
 ## Epic Progress
 
 | Epic | Stories | Status |
 |------|---------|--------|
-| 1. Project Foundation & Auth | 6 | **In Progress** (2 done, 1 spec'd, 3 backlog) |
+| 1. Project Foundation & Auth | 6 | **Done** ✅ (6/6) |
 | 2. User Management | 3 | Backlog |
 | 3. Employee Nomination Workflow | 5 | Backlog |
 | 4. Manager Approval Workflow | 4 | Backlog |
@@ -31,7 +31,16 @@
 - **Database**: PostgreSQL 16 via Docker Compose; `users` and `audit_logs` tables defined in Drizzle ORM with indexes, FK constraints, and append-only audit permissions
 - **Schema Exports**: Type-safe `User`, `NewUser`, `AuditLog`, `NewAuditLog` types exported from `@rewards-app/db`
 - **Seed Script**: Idempotent `db:seed` creates 1 manager + 2 employee users with bcryptjs-hashed passwords (12 rounds)
-- **Testing**: Vitest with 30 passing tests across all packages (schema validation + type exports + API health + frontend render)
+- **Authentication**: JWT access tokens (15m, HS256) + httpOnly refresh cookies (8h); login/refresh/logout endpoints
+- **RBAC**: Fastify preHandler hooks — `requireAuth` and `requireRole('manager')` enforced on all protected endpoints
+- **Design System**: Tailwind CSS v4 with Indigo/Slate tokens; shadcn/ui components (Button, Input, Textarea, Label, Badge, Card, Separator)
+- **App Shell**: Fixed 240px sidebar + header layout with role-based navigation
+- **Login Page**: Form with blur/submit validation, auto-refresh token restore, error handling
+- **Routing**: React Router with 6 routes; ProtectedRoute checks auth + role; auto-redirect
+- **State**: AuthContext (React Context for auth), TanStack Query client for server state
+- **API Client**: Fetch wrapper with automatic 401 → refresh → retry interceptor
+- **Error Handling**: Centralized `{ error, message, field, statusCode }` shape on all API errors
+- **Testing**: Vitest with 61 passing tests across all packages
 - **Build**: `pnpm turbo build` and `pnpm turbo test` both pass cleanly
 
 **Sprint tracking:** [sprint-status.yaml](_bmad-output/implementation-artifacts/sprint-status.yaml)
@@ -51,5 +60,8 @@ All planning documents live in [_bmad-output/planning-artifacts/](_bmad-output/p
 Story specs live in [_bmad-output/implementation-artifacts/](_bmad-output/implementation-artifacts/):
 
 - [**Story 1.1**](_bmad-output/implementation-artifacts/1-1-monorepo-initialization-and-dev-environment.md) — Monorepo Initialization & Dev Environment ✅
-- [**Story 1.2**](_bmad-output/implementation-artifacts/1-2-database-schema-users-and-audit-log.md) — Database Schema — Users & Audit Log
-- [**Story 1.3**](_bmad-output/implementation-artifacts/1-3-backend-authentication-api.md) — Backend Authentication API
+- [**Story 1.2**](_bmad-output/implementation-artifacts/1-2-database-schema-users-and-audit-log.md) — Database Schema — Users & Audit Log ✅
+- [**Story 1.3**](_bmad-output/implementation-artifacts/1-3-backend-authentication-api.md) — Backend Authentication API ✅
+- [**Story 1.4**](_bmad-output/implementation-artifacts/1-4-backend-role-based-access-control.md) — Backend Role-Based Access Control ✅
+- [**Story 1.5**](_bmad-output/implementation-artifacts/1-5-frontend-app-shell-and-design-system.md) — Frontend App Shell & Design System ✅
+- [**Story 1.6**](_bmad-output/implementation-artifacts/1-6-frontend-login-and-protected-routing.md) — Frontend Login & Protected Routing ✅
