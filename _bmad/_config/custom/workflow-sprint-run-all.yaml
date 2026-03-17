@@ -8,6 +8,7 @@ sequence:
   - step: create-story
     agent: sm
     action: create-story
+    isolation: subagent
     description: >
       Draft a new story file from the next item in the backlog.
     outputs:
@@ -17,6 +18,7 @@ sequence:
   - step: story-ready
     agent: sm
     action: story-ready
+    isolation: subagent
     description: >
       Review and approve the drafted story, confirming acceptance
       criteria, technical notes, and scope are complete.
@@ -29,6 +31,7 @@ sequence:
   - step: dev-story
     agent: dev
     action: dev-story
+    isolation: subagent
     description: >
       Implement the approved story following the architecture,
       project context, and story acceptance criteria.
@@ -41,9 +44,11 @@ sequence:
   - step: code-review
     agent: dev
     action: code-review
+    isolation: subagent
     description: >
       Run adversarial code review across multiple quality facets
-      on the implemented story changes.
+      on the implemented story changes. Runs in an isolated
+      sub-agent context to avoid bias from the implementation step.
     dependencies:
       - implemented-story
     outputs:
@@ -53,6 +58,7 @@ sequence:
   - step: story-done
     agent: dev
     action: story-approved
+    isolation: subagent
     description: >
       Mark the story as done after all acceptance criteria are met
       and code review is passed.
