@@ -6,7 +6,7 @@
 
 | Story | Title | Status |
 |-------|-------|--------|
-| 1.1 | Monorepo Initialization & Dev Environment | **Review** ✅ |
+| 1.1 | Monorepo Initialization & Dev Environment | **Done** ✅ |
 | 1.2 | Database Schema — Users & Audit Log | Ready for Dev |
 | 1.3 | Backend Authentication API | Ready for Dev |
 | 1.4 | Backend Role-Based Access Control | Backlog |
@@ -17,7 +17,7 @@
 
 | Epic | Stories | Status |
 |------|---------|--------|
-| 1. Project Foundation & Auth | 6 | **In Progress** (1 complete, 2 spec'd, 3 backlog) |
+| 1. Project Foundation & Auth | 6 | **In Progress** (1 done, 2 spec'd, 3 backlog) |
 | 2. User Management | 3 | Backlog |
 | 3. Employee Nomination Workflow | 5 | Backlog |
 | 4. Manager Approval Workflow | 4 | Backlog |

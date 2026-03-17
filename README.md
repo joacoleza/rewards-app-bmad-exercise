@@ -4,7 +4,7 @@ Employee peer-recognition and rewards web app built using the [BMAD methodology]
 
 ## Project Status
 
-**Story 1.1 complete** — Monorepo scaffolded with Turborepo + pnpm workspaces. Frontend (React 19 / Vite), backend (Fastify 5), database package (Drizzle ORM), and shared types package are all wired up. Health endpoint, Docker Compose for PostgreSQL, and Vitest tests are in place. See [PROJECT-STATUS.md](PROJECT-STATUS.md) for full details.
+**Story 1.1 done** — Monorepo scaffolded with Turborepo + pnpm workspaces. Frontend (React 19 / Vite), backend (Fastify 5), database package (Drizzle ORM), and shared types package are all wired up. Health endpoint, Docker Compose for PostgreSQL, and Vitest tests are in place. **Next up:** Story 1.2 (Database Schema — Users & Audit Log). See [PROJECT-STATUS.md](PROJECT-STATUS.md) for full details.
 
 ## Tech Stack
 

@@ -44,7 +44,7 @@ story_location: _bmad-output/implementation-artifacts
 development_status:
   # Epic 1: Project Foundation & Authentication
   epic-1: in-progress
-  1-1-monorepo-initialization-and-dev-environment: review
+  1-1-monorepo-initialization-and-dev-environment: done
   1-2-database-schema-users-and-audit-log: ready-for-dev
   1-3-backend-authentication-api: ready-for-dev
   1-4-backend-role-based-access-control: backlog

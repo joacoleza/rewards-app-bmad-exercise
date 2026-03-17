@@ -1,6 +1,6 @@
 # Story 1.1: Monorepo Initialization & Dev Environment
 
-Status: review
+Status: done
 
 ## Story
 
