@@ -1,6 +1,6 @@
 # Story 1.1: Monorepo Initialization & Dev Environment
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -28,81 +28,81 @@ So that all subsequent development has a consistent, working foundation to build
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Initialize Turborepo monorepo with pnpm workspaces (AC: #1, #8)
-  - [ ] 1.1 Run `pnpm dlx create-turbo@latest` or manually scaffold root package.json, pnpm-workspace.yaml, turbo.json
-  - [ ] 1.2 Create tsconfig.base.json with strict mode at repo root
-  - [ ] 1.3 Create pnpm-workspace.yaml listing `apps/*` and `packages/*`
-  - [ ] 1.4 Create .prettierrc with shared formatting config
-  - [ ] 1.5 Update .gitignore (node_modules, dist, .env, .turbo, coverage)
+- [x] Task 1: Initialize Turborepo monorepo with pnpm workspaces (AC: #1, #8)
+  - [x] 1.1 Run `pnpm dlx create-turbo@latest` or manually scaffold root package.json, pnpm-workspace.yaml, turbo.json
+  - [x] 1.2 Create tsconfig.base.json with strict mode at repo root
+  - [x] 1.3 Create pnpm-workspace.yaml listing `apps/*` and `packages/*`
+  - [x] 1.4 Create .prettierrc with shared formatting config
+  - [x] 1.5 Update .gitignore (node_modules, dist, .env, .turbo, coverage)
 
-- [ ] Task 2: Scaffold apps/web — React 19 + Vite + TypeScript (AC: #1, #3, #8)
-  - [ ] 2.1 Create apps/web via `npm create vite@latest apps/web -- --template react-ts`
-  - [ ] 2.2 Create apps/web/tsconfig.json extending tsconfig.base.json
-  - [ ] 2.3 Configure vite.config.ts with React plugin
-  - [ ] 2.4 Verify React 19 is installed (not 18)
-  - [ ] 2.5 Add a basic App.tsx placeholder rendering "bmad web"
-  - [ ] 2.6 Ensure dev server starts on a configurable port
+- [x] Task 2: Scaffold apps/web — React 19 + Vite + TypeScript (AC: #1, #3, #8)
+  - [x] 2.1 Create apps/web via `npm create vite@latest apps/web -- --template react-ts`
+  - [x] 2.2 Create apps/web/tsconfig.json extending tsconfig.base.json
+  - [x] 2.3 Configure vite.config.ts with React plugin
+  - [x] 2.4 Verify React 19 is installed (not 18)
+  - [x] 2.5 Add a basic App.tsx placeholder rendering "bmad web"
+  - [x] 2.6 Ensure dev server starts on a configurable port
 
-- [ ] Task 3: Scaffold apps/api — Fastify + TypeScript (AC: #1, #3, #4, #8)
-  - [ ] 3.1 Create apps/api directory with package.json
-  - [ ] 3.2 Install fastify (v5.8.x), @fastify/env, pino-pretty (dev)
-  - [ ] 3.3 Create apps/api/tsconfig.json extending tsconfig.base.json
-  - [ ] 3.4 Create src/app.ts — Fastify instance creation
-  - [ ] 3.5 Create src/server.ts — Entry point that starts listening
-  - [ ] 3.6 Implement GET /api/health route returning `{ "status": "ok" }` (public, no auth)
-  - [ ] 3.7 Configure @fastify/env with JSON Schema for env vars (placeholder — full env validation in Story 1.3)
-  - [ ] 3.8 Add `tsx` or `tsx watch` as dev script for hot reload
-  - [ ] 3.9 Bind to 0.0.0.0 (required for Docker); port from env PORT or default 3001
+- [x] Task 3: Scaffold apps/api — Fastify + TypeScript (AC: #1, #3, #4, #8)
+  - [x] 3.1 Create apps/api directory with package.json
+  - [x] 3.2 Install fastify (v5.8.x), @fastify/env, pino-pretty (dev)
+  - [x] 3.3 Create apps/api/tsconfig.json extending tsconfig.base.json
+  - [x] 3.4 Create src/app.ts — Fastify instance creation
+  - [x] 3.5 Create src/server.ts — Entry point that starts listening
+  - [x] 3.6 Implement GET /api/health route returning `{ "status": "ok" }` (public, no auth)
+  - [x] 3.7 Configure @fastify/env with JSON Schema for env vars (placeholder — full env validation in Story 1.3)
+  - [x] 3.8 Add `tsx` or `tsx watch` as dev script for hot reload
+  - [x] 3.9 Bind to 0.0.0.0 (required for Docker); port from env PORT or default 3001
 
-- [ ] Task 4: Create packages/db (AC: #1, #8)
-  - [ ] 4.1 Create packages/db with package.json, tsconfig.json
-  - [ ] 4.2 Install drizzle-orm (v0.45.x), pg, @types/pg, drizzle-kit (dev)
-  - [ ] 4.3 Create src/index.ts exporting a placeholder (actual schema in Story 1.2)
-  - [ ] 4.4 Create drizzle.config.ts with DATABASE_URL from env
-  - [ ] 4.5 Configure package.json exports for workspace consumption
+- [x] Task 4: Create packages/db (AC: #1, #8)
+  - [x] 4.1 Create packages/db with package.json, tsconfig.json
+  - [x] 4.2 Install drizzle-orm (v0.45.x), pg, @types/pg, drizzle-kit (dev)
+  - [x] 4.3 Create src/index.ts exporting a placeholder (actual schema in Story 1.2)
+  - [x] 4.4 Create drizzle.config.ts with DATABASE_URL from env
+  - [x] 4.5 Configure package.json exports for workspace consumption
 
-- [ ] Task 5: Create packages/shared (AC: #1, #8)
-  - [ ] 5.1 Create packages/shared with package.json, tsconfig.json
-  - [ ] 5.2 Create src/index.ts with placeholder type exports
-  - [ ] 5.3 Create src/constants.ts, src/errors.ts, src/types.ts with placeholders
-  - [ ] 5.4 Configure package.json exports for workspace consumption
+- [x] Task 5: Create packages/shared (AC: #1, #8)
+  - [x] 5.1 Create packages/shared with package.json, tsconfig.json
+  - [x] 5.2 Create src/index.ts with placeholder type exports
+  - [x] 5.3 Create src/constants.ts, src/errors.ts, src/types.ts with placeholders
+  - [x] 5.4 Configure package.json exports for workspace consumption
 
-- [ ] Task 6: Configure Docker Compose for PostgreSQL (AC: #2)
-  - [ ] 6.1 Create docker-compose.dev.yml with PostgreSQL 16+ service
-  - [ ] 6.2 Configure persistent volume for database data
-  - [ ] 6.3 Set default credentials (matching .env.example DATABASE_URL)
-  - [ ] 6.4 Expose PostgreSQL port (5432)
-  - [ ] ~~6.5~~ _Removed: production docker-compose.yml is deferred to future stories when Dockerfiles exist — stub services with no Dockerfiles are not testable and add confusion_
+- [x] Task 6: Configure Docker Compose for PostgreSQL (AC: #2)
+  - [x] 6.1 Create docker-compose.dev.yml with PostgreSQL 16+ service
+  - [x] 6.2 Configure persistent volume for database data
+  - [x] 6.3 Set default credentials (matching .env.example DATABASE_URL)
+  - [x] 6.4 Expose PostgreSQL port (5432)
+  - [x] ~~6.5~~ _Removed: production docker-compose.yml is deferred to future stories when Dockerfiles exist — stub services with no Dockerfiles are not testable and add confusion_
 
-- [ ] Task 7: Configure turbo.json pipelines (AC: #5)
-  - [ ] 7.1 Define `build` pipeline (dependsOn: ["^build"], outputs: ["dist/**"])
-  - [ ] 7.2 Add a `build` script to each workspace package.json (e.g., `tsc --noEmit` for apps, `tsc` for packages) so turbo `build` and dependent tasks resolve correctly
-  - [ ] 7.3 Define `dev` pipeline (persistent: true, cache: false)
-  - [ ] 7.4 Define `test` pipeline (dependsOn: ["build"])
-  - [ ] 7.5 Define `test:unit` pipeline
-  - [ ] 7.6 Define `test:e2e` pipeline
-  - [ ] 7.7 Define `test:ci` pipeline (dependsOn: ["build"])
+- [x] Task 7: Configure turbo.json pipelines (AC: #5)
+  - [x] 7.1 Define `build` pipeline (dependsOn: ["^build"], outputs: ["dist/**"])
+  - [x] 7.2 Add a `build` script to each workspace package.json (e.g., `tsc --noEmit` for apps, `tsc` for packages) so turbo `build` and dependent tasks resolve correctly
+  - [x] 7.3 Define `dev` pipeline (persistent: true, cache: false)
+  - [x] 7.4 Define `test` pipeline (dependsOn: ["build"])
+  - [x] 7.5 Define `test:unit` pipeline
+  - [x] 7.6 Define `test:e2e` pipeline
+  - [x] 7.7 Define `test:ci` pipeline (dependsOn: ["build"])
 
-- [ ] Task 8: Create .env.example and environment config (AC: #6)
-  - [ ] 8.1 Create .env.example with all 7 env vars documented with comments
-  - [ ] 8.2 Add values: DATABASE_URL=postgresql://postgres:postgres@localhost:5432/bmad, JWT_SECRET=change-me-in-production, JWT_REFRESH_SECRET=change-me-in-production-refresh, NODE_ENV=development, PORT=3001, LOG_LEVEL=debug, CORS_ORIGIN=http://localhost:5173
-  - [ ] 8.3 Ensure .env is in .gitignore
+- [x] Task 8: Create .env.example and environment config (AC: #6)
+  - [x] 8.1 Create .env.example with all 7 env vars documented with comments
+  - [x] 8.2 Add values: DATABASE_URL=postgresql://postgres:postgres@localhost:5432/bmad, JWT_SECRET=change-me-in-production, JWT_REFRESH_SECRET=change-me-in-production-refresh, NODE_ENV=development, PORT=3001, LOG_LEVEL=debug, CORS_ORIGIN=http://localhost:5173
+  - [x] 8.3 Ensure .env is in .gitignore
 
-- [ ] Task 9: Configure Vitest and placeholder tests (AC: #7)
-  - [ ] 9.1 Install vitest in apps/web and apps/api
-  - [ ] 9.2 Install jsdom and @testing-library/react as dev dependencies in apps/web (required for jsdom environment and component rendering tests)
-  - [ ] 9.3 Create vitest.config.ts in each app workspace
-  - [ ] 9.4 Add `test` script to apps/web and apps/api package.json only (NOT to packages/db or packages/shared — they have no tests yet)
-  - [ ] 9.5 Create apps/api/src/server.test.ts — test that health endpoint returns 200
-  - [ ] 9.6 Create apps/web/src/App.test.tsx — test that App renders without crash
-  - [ ] 9.7 Verify `pnpm turbo test` runs tests across app workspaces only (packages are skipped since they lack test scripts)
+- [x] Task 9: Configure Vitest and placeholder tests (AC: #7)
+  - [x] 9.1 Install vitest in apps/web and apps/api
+  - [x] 9.2 Install jsdom and @testing-library/react as dev dependencies in apps/web (required for jsdom environment and component rendering tests)
+  - [x] 9.3 Create vitest.config.ts in each app workspace
+  - [x] 9.4 Add `test` script to apps/web and apps/api package.json only (NOT to packages/db or packages/shared — they have no tests yet)
+  - [x] 9.5 Create apps/api/src/server.test.ts — test that health endpoint returns 200
+  - [x] 9.6 Create apps/web/src/App.test.tsx — test that App renders without crash
+  - [x] 9.7 Verify `pnpm turbo test` runs tests across app workspaces only (packages are skipped since they lack test scripts)
 
-- [ ] Task 10: Final integration verification (AC: #1-#8)
-  - [ ] 10.1 Run `pnpm install` from clean state — verify zero errors
-  - [ ] 10.2 Run `docker compose -f docker-compose.dev.yml up db` — verify PostgreSQL starts
-  - [ ] 10.3 Run `pnpm turbo dev` — verify both servers start
-  - [ ] 10.4 Curl GET /api/health — verify 200 `{ "status": "ok" }`
-  - [ ] 10.5 Run `pnpm turbo test` — verify all tests pass
+- [x] Task 10: Final integration verification (AC: #1-#8)
+  - [x] 10.1 Run `pnpm install` from clean state — verify zero errors
+  - [x] 10.2 Run `docker compose -f docker-compose.dev.yml up db` — verify PostgreSQL starts
+  - [x] 10.3 Run `pnpm turbo dev` — verify both servers start
+  - [x] 10.4 Curl GET /api/health — verify 200 `{ "status": "ok" }`
+  - [x] 10.5 Run `pnpm turbo test` — verify all tests pass
 
 ## Dev Notes
 
@@ -354,6 +354,16 @@ Claude Opus 4.6 (GitHub Copilot)
 - The health endpoint is the ONLY API route in this story.
 - Vitest setup is minimal — just enough for placeholder tests to pass. Full test infrastructure evolves with subsequent stories.
 - Docker Compose dev file only needs the `db` service. Production docker-compose.yml can have stub service definitions.
+- ✅ All tasks completed and verified — `pnpm install` zero errors, `pnpm turbo build` and `pnpm turbo test` both pass.
+- Used Vite v6.x (v8.0 not yet GA); React 19 confirmed installed; Fastify v5.x; Drizzle ORM v0.45.1; Turbo v2.8.17; TypeScript v5.9.3.
+- Required `composite: true` in packages/db and packages/shared tsconfig.json for TypeScript project references to work correctly.
+- Root package named `rewards-app-bmad-exercise` per user preference.
+- API health endpoint test passes (Fastify inject): GET /api/health → 200 `{ "status": "ok" }`.
+- Web App.test.tsx passes: renders "bmad web" text successfully.
+
+### Change Log
+
+- 2026-03-17: Story 1.1 fully implemented — monorepo scaffolded with all 4 workspaces, Docker Compose, Vitest, turbo pipelines. All ACs satisfied.
 
 ### File List
 
@@ -369,6 +379,7 @@ Files to create:
 - `apps/web/package.json`
 - `apps/web/tsconfig.json`
 - `apps/web/vite.config.ts`
+- `apps/web/vitest.config.ts`
 - `apps/web/index.html`
 - `apps/web/src/main.tsx`
 - `apps/web/src/App.tsx`
@@ -376,6 +387,7 @@ Files to create:
 - `apps/web/src/index.css`
 - `apps/api/package.json`
 - `apps/api/tsconfig.json`
+- `apps/api/vitest.config.ts`
 - `apps/api/src/app.ts`
 - `apps/api/src/server.ts`
 - `apps/api/src/server.test.ts`
