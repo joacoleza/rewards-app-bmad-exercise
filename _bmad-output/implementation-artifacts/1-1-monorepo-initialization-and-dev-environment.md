@@ -22,7 +22,7 @@ So that all subsequent development has a consistent, working foundation to build
 
 6. **Given** the monorepo root, **When** I check for .env.example, **Then** it exists with documented placeholder values for DATABASE_URL, JWT_SECRET, JWT_REFRESH_SECRET, NODE_ENV, PORT, LOG_LEVEL, CORS_ORIGIN, **And** .env is listed in .gitignore.
 
-7. **Given** the monorepo is configured, **When** I run `pnpm turbo test`, **Then** Vitest executes across all workspaces with co-located test file discovery, **And** at least one placeholder test passes in both apps/web and apps/api.
+7. **Given** the monorepo is configured, **When** I run `pnpm turbo test`, **Then** Vitest executes in apps/web and apps/api with co-located test file discovery, **And** at least one placeholder test passes in both apps/web and apps/api. (packages/db and packages/shared do not have test scripts until they have tests.)
 
 8. **Given** the tsconfig.base.json at the repo root, **When** I inspect workspace tsconfigs, **Then** apps/web, apps/api, packages/db, and packages/shared each extend the base config, **And** strict mode is enabled.
 
@@ -72,15 +72,16 @@ So that all subsequent development has a consistent, working foundation to build
   - [ ] 6.2 Configure persistent volume for database data
   - [ ] 6.3 Set default credentials (matching .env.example DATABASE_URL)
   - [ ] 6.4 Expose PostgreSQL port (5432)
-  - [ ] 6.5 Create docker-compose.yml (production-like) with db, api, web services (stubs — full Dockerfiles in later stories)
+  - [ ] ~~6.5~~ _Removed: production docker-compose.yml is deferred to future stories when Dockerfiles exist — stub services with no Dockerfiles are not testable and add confusion_
 
 - [ ] Task 7: Configure turbo.json pipelines (AC: #5)
-  - [ ] 7.1 Define `build` pipeline (outputs: ["dist/**"])
-  - [ ] 7.2 Define `dev` pipeline (persistent: true, cache: false)
-  - [ ] 7.3 Define `test` pipeline (dependsOn: ["build"])
-  - [ ] 7.4 Define `test:unit` pipeline
-  - [ ] 7.5 Define `test:e2e` pipeline
-  - [ ] 7.6 Define `test:ci` pipeline (dependsOn: ["build"])
+  - [ ] 7.1 Define `build` pipeline (dependsOn: ["^build"], outputs: ["dist/**"])
+  - [ ] 7.2 Add a `build` script to each workspace package.json (e.g., `tsc --noEmit` for apps, `tsc` for packages) so turbo `build` and dependent tasks resolve correctly
+  - [ ] 7.3 Define `dev` pipeline (persistent: true, cache: false)
+  - [ ] 7.4 Define `test` pipeline (dependsOn: ["build"])
+  - [ ] 7.5 Define `test:unit` pipeline
+  - [ ] 7.6 Define `test:e2e` pipeline
+  - [ ] 7.7 Define `test:ci` pipeline (dependsOn: ["build"])
 
 - [ ] Task 8: Create .env.example and environment config (AC: #6)
   - [ ] 8.1 Create .env.example with all 7 env vars documented with comments
@@ -89,11 +90,12 @@ So that all subsequent development has a consistent, working foundation to build
 
 - [ ] Task 9: Configure Vitest and placeholder tests (AC: #7)
   - [ ] 9.1 Install vitest in apps/web and apps/api
-  - [ ] 9.2 Create vitest.config.ts in each app workspace
-  - [ ] 9.3 Add `test` script to each workspace package.json
-  - [ ] 9.4 Create apps/api/src/server.test.ts — test that health endpoint returns 200
-  - [ ] 9.5 Create apps/web/src/App.test.tsx — test that App renders without crash
-  - [ ] 9.6 Verify `pnpm turbo test` runs tests across all workspaces
+  - [ ] 9.2 Install jsdom and @testing-library/react as dev dependencies in apps/web (required for jsdom environment and component rendering tests)
+  - [ ] 9.3 Create vitest.config.ts in each app workspace
+  - [ ] 9.4 Add `test` script to apps/web and apps/api package.json only (NOT to packages/db or packages/shared — they have no tests yet)
+  - [ ] 9.5 Create apps/api/src/server.test.ts — test that health endpoint returns 200
+  - [ ] 9.6 Create apps/web/src/App.test.tsx — test that App renders without crash
+  - [ ] 9.7 Verify `pnpm turbo test` runs tests across app workspaces only (packages are skipped since they lack test scripts)
 
 - [ ] Task 10: Final integration verification (AC: #1-#8)
   - [ ] 10.1 Run `pnpm install` from clean state — verify zero errors
@@ -110,7 +112,7 @@ So that all subsequent development has a consistent, working foundation to build
 |---|---|---|
 | Turborepo | v2.8.x | Monorepo orchestrator |
 | pnpm | Latest | Package manager — use workspace protocol `workspace:*` |
-| Vite | v8.0 | Frontend bundler (with Rolldown) |
+| Vite | v8.0 | Frontend bundler (with Rolldown). If v8.0 is not yet GA, use latest stable v6.x and note the deviation. |
 | React | 19 | NOT React 18 |
 | TypeScript | Latest | Strict mode everywhere |
 | Fastify | v5.8.x | Backend framework |
@@ -135,8 +137,7 @@ bmad/
 ├── package.json                     <- Root workspace config
 ├── pnpm-workspace.yaml              <- pnpm workspace definition
 ├── turbo.json                       <- Turborepo task pipeline
-├── docker-compose.yml               <- Production-like: db + api + web
-├── docker-compose.dev.yml           <- Dev override: hot reload, debug ports
+├── docker-compose.dev.yml           <- Dev: PostgreSQL + hot reload
 ├── .env.example                     <- Documented env var template
 ├── .env                             <- Local env vars (gitignored)
 ├── .gitignore
@@ -175,7 +176,8 @@ bmad/
 │           ├── constants.ts
 │           ├── errors.ts
 │           └── types.ts
-└── scripts/                         <- (empty dir placeholder for Story 1.2)
+└── scripts/                         <- Placeholder for Story 1.2
+    └── .gitkeep                     <- Ensures directory is tracked by git
 ```
 
 ### Naming Conventions (MUST FOLLOW)
@@ -200,7 +202,7 @@ bmad/
     "build": { "dependsOn": ["^build"], "outputs": ["dist/**"] },
     "dev": { "persistent": true, "cache": false },
     "test": { "dependsOn": ["build"] },
-    "test:unit": {},
+    "test:unit": { "dependsOn": ["build"] },
     "test:e2e": {},
     "test:ci": { "dependsOn": ["build"] }
   }
@@ -326,6 +328,8 @@ This story is strictly about project scaffolding. The following are handled by s
 - **shadcn/ui, design system, Tailwind config** (Story 1.5)
 - **Login page, React Router, protected routes** (Story 1.6)
 - **Seed scripts** (Story 1.2)
+- **Linting / static analysis** (ESLint, Biome, etc.) — not configured in this story; add in a future story or as a team convention decision
+- **Production docker-compose.yml** — deferred until Dockerfiles exist for api and web services
 
 ### References
 
@@ -362,7 +366,6 @@ Files to create:
 - `.gitignore` (update existing)
 - `.env.example`
 - `docker-compose.dev.yml`
-- `docker-compose.yml`
 - `apps/web/package.json`
 - `apps/web/tsconfig.json`
 - `apps/web/vite.config.ts`
@@ -386,4 +389,4 @@ Files to create:
 - `packages/shared/src/constants.ts`
 - `packages/shared/src/errors.ts`
 - `packages/shared/src/types.ts`
-- `scripts/` (empty directory placeholder)
+- `scripts/.gitkeep`
