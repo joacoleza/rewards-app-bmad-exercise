@@ -1,29 +1,34 @@
 # Project Status
 
-**BMAD Stage:** Implementation — Epic 1 complete, Epic 2 backlog
+**BMAD Stage:** Implementation — Epic 1 complete, Epic 2 in progress (1/3 done)
 
 ## Current Sprint
 
-| Story | Title                                          | Status             |
-| ----- | ---------------------------------------------- | ------------------ |
-| 1.1   | Monorepo Initialization & Dev Environment      | **Done** ✅        |
-| 1.2   | Database Schema — Users & Audit Log            | **Done** ✅        |
-| 1.3   | Backend Authentication API                     | **Done** ✅        |
-| 1.4   | Backend Role-Based Access Control              | **Done** ✅        |
-| 1.5   | Frontend App Shell & Design System             | **Done** ✅        |
-| 1.6   | Frontend Login & Protected Routing             | **Done** ✅        |
-| 1.7   | E2E Tests — Authentication & Protected Routing | **QA Complete** ✅ |
+| Story | Title                                          | Status      |
+| ----- | ---------------------------------------------- | ----------- |
+| 1.1   | Monorepo Initialization & Dev Environment      | **Done** ✅ |
+| 1.2   | Database Schema — Users & Audit Log            | **Done** ✅ |
+| 1.3   | Backend Authentication API                     | **Done** ✅ |
+| 1.4   | Backend Role-Based Access Control              | **Done** ✅ |
+| 1.5   | Frontend App Shell & Design System             | **Done** ✅ |
+| 1.6   | Frontend Login & Protected Routing             | **Done** ✅ |
+| 1.7   | E2E Tests — Authentication & Protected Routing | **Done** ✅ |
+| 2.1   | Backend User Management API                    | **Done** ✅ |
+| 2.2   | User Administration Page                       | Backlog     |
+| 2.3   | Create User Form & Feedback                    | Backlog     |
 
-**Latest:** Story 1.7 implemented and reviewed on 2026-03-18 — adversarial code review passed; Playwright E2E harness at repo root, 6 tests covering auth and protected-routing flows, robust CI output, all passing.
+**Latest:** Story 2.1 done on 2026-03-18 — code review completed (3-layer adversarial: Blind Hunter, Edge Case Hunter, Acceptance Auditor). All 9 acceptance criteria MET. 5 patch fixes applied (defensive auth guard, schema `required` arrays, 401 response schemas, `.returning()` guard, constraint-name inspection on 23505). 72 API tests + 28 DB + 37 web = 137 unit/integration tests + 10 E2E tests all passing.
 
-**Epic 1 status:** All 7 stories complete (1.7 reviewed and done). Foundation, auth, RBAC, frontend shell, login routing, and E2E test harness (adversarial review passed) are all in place.
+**Epic 1 status:** All 7 stories complete — foundation, auth, RBAC, frontend shell, login routing, and E2E test harness all done and reviewed.
+
+**Epic 2 status:** In progress — Story 2.1 done (code reviewed + patches applied). Next: Story 2.2 — User Administration Page.
 
 ## Epic Progress
 
 | Epic                            | Stories | Status                         |
 | ------------------------------- | ------- | ------------------------------ |
 | 1. Project Foundation & Auth    | 7       | **Complete** ✅ (all reviewed) |
-| 2. User Management              | 3       | Backlog                        |
+| 2. User Management              | 3       | **In Progress** (1/3 done)     |
 | 3. Employee Nomination Workflow | 5       | Backlog                        |
 | 4. Manager Approval Workflow    | 4       | Backlog                        |
 | 5. Audit Trail & Investigation  | 3       | Backlog                        |
@@ -38,6 +43,7 @@
 - **Seed Script**: Idempotent `db:seed` creates 1 manager + 2 employee users with bcryptjs-hashed passwords (12 rounds)
 - **Authentication**: JWT access tokens (15m, HS256) + httpOnly refresh cookies (8h); login/refresh/logout endpoints
 - **RBAC**: Fastify preHandler hooks — `requireAuth` and `requireRole('manager')` enforced on all protected endpoints
+- **User Management API**: `POST /api/users` (create user, manager-only, 201) and `GET /api/users` (list users, manager-only, 200); bcrypt password hashing (12 rounds); USER_CREATED audit log in same transaction; duplicate email → 409 ConflictError; passwordHash never exposed in responses
 - **Design System**: Tailwind CSS v4 with Indigo/Slate tokens; shadcn/ui components (Button, Input, Textarea, Label, Badge, Card, Toast, Table, Separator, Avatar)
 - **App Shell**: Fixed 240px sidebar + header layout with role-based navigation
 - **Login Page**: Form with blur/submit validation, auto-refresh token restore, error handling
@@ -45,8 +51,8 @@
 - **State**: AuthContext (React Context for auth), TanStack Query client for server state
 - **API Client**: Fetch wrapper with automatic 401 → refresh → retry interceptor and auth-expiry event handling on failed refresh
 - **Error Handling**: Centralized `{ error, message, field, statusCode }` shape on all API errors
-- **Unit Tests**: Vitest with 116 passing tests across all packages (51 API + 28 DB + 37 web)
-- **E2E Tests**: Playwright at repo root — 6 tests covering employee/manager login, wrong-password error, logout session clearance, unauthenticated redirect, and role-based route guarding; `pnpm test:e2e` runs against live dev servers
+- **Unit Tests**: Vitest with 137 passing tests across all packages (72 API + 28 DB + 37 web) — no regressions; Story 2.1 added 8 service unit tests + 13 route integration tests
+- **E2E Tests**: Playwright at repo root — 10 tests: 6 auth/routing (Epic 1) + 4 user management API (Story 2.1: create user, duplicate email 409, employee 403 on POST, employee 403 on GET); `pnpm test:e2e` runs against live dev servers
 - **Build**: `pnpm build` and `pnpm test` both pass cleanly
 
 **Sprint tracking:** [sprint-status.yaml](_bmad-output/implementation-artifacts/sprint-status.yaml)
@@ -72,3 +78,4 @@ Story specs live in [\_bmad-output/implementation-artifacts/](_bmad-output/imple
 - [**Story 1.5**](_bmad-output/implementation-artifacts/1-5-frontend-app-shell-and-design-system.md) — Frontend App Shell & Design System ✅
 - [**Story 1.6**](_bmad-output/implementation-artifacts/1-6-frontend-login-and-protected-routing.md) — Frontend Login & Protected Routing ✅ (code review completed; follow-up fixes applied and validated)
 - [**Story 1.7**](_bmad-output/implementation-artifacts/1-7-e2e-tests-authentication-and-protected-routing.md) — E2E Tests: Authentication & Protected Routing ✅ (adversarial review passed, QA complete)
+- [**Story 2.1**](_bmad-output/implementation-artifacts/2-1-backend-user-management-api.md) — Backend User Management API ✅ (code reviewed, 5 patch fixes applied)
