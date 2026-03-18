@@ -21,11 +21,9 @@ Epic 4 — Approval Workflow  ░░░░░░░░░░  0/4
 Epic 5 — Audit Trail        ░░░░░░░░░░  0/3
 ```
 
-**Latest completed:** Story 1.6 — Frontend Login & Protected Routing
+**Latest completed:** [Story 1.6 — Frontend Login & Protected Routing](_bmad-output/implementation-artifacts/1-6-frontend-login-and-protected-routing.md)
 
-**Latest review:** Story 1.6 code review completed on 2026-03-18 — 4 follow-up patch findings fixed and validated
-
-**Next up:** Story 1.7 — E2E Tests — Authentication & Protected Routing
+**Next up:** `Story 1.7 — E2E Tests — Authentication & Protected Routing`
 
 See [PROJECT-STATUS.md](PROJECT-STATUS.md) for full details and the Story 1.6 review summary.
 

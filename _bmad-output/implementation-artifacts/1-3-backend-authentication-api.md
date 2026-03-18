@@ -1,12 +1,29 @@
 # Story 1.3: Backend Authentication API
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
 As a user,
 I want to log in with my email and password and receive secure tokens,
 So that I can access the application with my identity verified and session maintained.
+
+## Implementation Summary
+
+- `apps/api/src/app.ts` now builds the API with fail-fast env loading, structured Fastify/Pino logging, cookie support, CORS, centralized error handling, and `/api/auth` route registration.
+- `apps/api/src/plugins/env.ts` validates `DATABASE_URL`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, `NODE_ENV`, `PORT`, `LOG_LEVEL`, and `CORS_ORIGIN`, and exposes typed `fastify.config` values to the app.
+- `apps/api/src/services/authService.ts` delivers bcrypt password hashing/verification plus HS256 JWT access and refresh token generation/verification with the required 15-minute and 8-hour lifetimes.
+- `apps/api/src/services/auditService.ts` writes structured audit log entries, and successful login now records `USER_LOGIN` events without leaking secrets.
+- `apps/api/src/routes/auth/index.ts` implements `POST /api/auth/login`, `POST /api/auth/refresh`, and `POST /api/auth/logout` with JSON Schema validation, generic unauthorized messaging, httpOnly refresh cookies, and cookie clearing on invalid refresh/logout flows.
+- The refresh response returns both a replacement access token and the resolved user payload, which the frontend now uses for session restoration.
+
+## Validation Summary
+
+- `apps/api/src/plugins/env.test.ts` verifies startup failure when required env vars are missing or invalid.
+- `apps/api/src/server.test.ts` verifies the centralized error handler and production-safe internal error behavior.
+- `apps/api/src/services/authService.test.ts` covers password hashing, JWT generation, expiry handling, wrong-secret rejection, and malformed payload rejection.
+- `apps/api/src/services/auditService.test.ts` verifies audit insertion behavior and null payload normalization.
+- `apps/api/src/routes/auth/index.test.ts` covers successful login, audit logging, invalid credentials, validation failures, refresh success/failure, deleted-user refresh rejection, and logout cookie clearing.
 
 ## Acceptance Criteria
 
@@ -26,7 +43,9 @@ So that I can access the application with my identity verified and session maint
 
 8. **Given** the API server is running, **When** I inspect log output, **Then** Pino structured JSON logs are produced, **And** log level is configurable via LOG_LEVEL env var, **And** passwords are never logged.
 
-## Tasks / Subtasks
+## Original Planning Checklist (Historical Reference)
+
+The checklist below is preserved from the pre-implementation story draft for traceability. Delivery status is captured by the `done` story state and the implementation summary above.
 
 - [ ] Task 1: Configure @fastify/env with full env validation (AC: #7)
   - [ ] 1.1 Update apps/api/src/plugins/env.ts with complete JSON Schema for all env vars
@@ -110,7 +129,7 @@ So that I can access the application with my identity verified and session maint
   - [ ] 10.9 Test: logout → 200 + cookie cleared
   - [ ] 10.10 Test: server fails to start without JWT_SECRET
 
-## Dev Notes
+## Original Dev Notes (Historical Reference)
 
 ### Authentication Architecture (MUST FOLLOW)
 

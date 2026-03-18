@@ -1,12 +1,26 @@
 # Story 1.4: Backend Role-Based Access Control
 
-Status: in-progress
+Status: done
 
 ## Story
 
 As a system,
 I want role-based access control enforced on every API endpoint,
 So that employees cannot access manager features and unauthenticated users cannot access protected resources.
+
+## Implementation Summary
+
+- `apps/api/src/plugins/auth.ts` now exports reusable `requireAuth` and `requireRole()` Fastify pre-handlers that validate Bearer tokens, reject tampered or expired JWTs, and attach `{ sub, role }` to `request.user`.
+- The Fastify request type is extended so protected handlers can consume the authenticated user identity in a typed way.
+- `apps/api/src/routes/protected/index.ts` provides non-production protected endpoints used to validate both authenticated-only and manager-only access paths.
+- `apps/api/src/app.ts` registers the auth plugin and the protected validation routes consistently, keeping RBAC wiring aligned with the app bootstrap path established in Story 1.3.
+- Unauthorized responses use the shared `{ error, message, field, statusCode }` JSON shape, and manager-only checks return the required `FORBIDDEN` contract.
+
+## Validation Summary
+
+- `apps/api/src/plugins/auth.test.ts` covers missing headers, malformed headers, expired tokens, tampered JWT payloads, wrong-secret tokens, employee access, manager access, and request-context identity propagation.
+- RBAC behavior is exercised against both `requireAuth` and `requireRole('manager')` protected endpoints using real signed JWTs.
+- Story 1.3 refresh coverage remains the session-renewal path that supports post-expiry recovery for authenticated users.
 
 ## Acceptance Criteria
 
@@ -22,7 +36,9 @@ So that employees cannot access manager features and unauthenticated users canno
 
 6. **Given** the auth plugin, **When** I run integration tests, **Then** tests verify: unauthenticated → 401, wrong role → 403, correct role → success, **And** tests verify token expiry behavior, **And** tests verify that the JWT payload cannot be tampered with.
 
-## Tasks / Subtasks
+## Original Planning Checklist (Historical Reference)
+
+The checklist below is preserved from the pre-implementation story draft for traceability. Delivery status is captured by the `done` story state and the implementation summary above.
 
 - [ ] Task 1: Create auth plugin with requireAuth and requireRole hooks
   - [ ] 1.1 Create apps/api/src/plugins/auth.ts
@@ -47,7 +63,7 @@ So that employees cannot access manager features and unauthenticated users canno
   - [ ] 3.9 Test: manager token on requireAuth endpoint → 200
   - [ ] 3.10 Test: user identity (sub, role) available in request context
 
-## Dev Notes
+## Original Dev Notes (Historical Reference)
 
 ### Auth Plugin Architecture (MUST FOLLOW)
 
