@@ -5,25 +5,25 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue?logo=typescript&logoColor=white)
 ![Node](https://img.shields.io/badge/node-22_LTS-339933?logo=node.js&logoColor=white)
 ![BMAD](https://img.shields.io/badge/BMAD-v6.2.0-purple)
-![Stories](https://img.shields.io/badge/stories-6%2F21_(29%25)-yellow)
+![Stories](https://img.shields.io/badge/stories-6%2F22_(27%25)-yellow)
 
 Employee peer-recognition and rewards web app built using the [BMAD methodology](https://github.com/bmadcode/BMAD-METHOD) (v6.2.0). Employees nominate peers for meaningful contributions, managers approve nominations, and rewards are issued as gift cards.
 
 ## Project Status
 
-**Overall: 6 / 21 stories done (29%)**
+**Overall: 6 / 22 stories done (27%)**
 
 ```
-Epic 1 — Foundation & Auth  ██████████  6/6  ✅
+Epic 1 — Foundation & Auth  █████████░  6/7
 Epic 2 — User Management    ░░░░░░░░░░  0/3
 Epic 3 — Nomination Workflow░░░░░░░░░░  0/5
 Epic 4 — Approval Workflow  ░░░░░░░░░░  0/4
 Epic 5 — Audit Trail        ░░░░░░░░░░  0/3
 ```
 
-**Latest completed:** Story 1.6 — Frontend Login & Protected Routing (Epic 1 complete!)
+**Latest completed:** Story 1.6 — Frontend Login & Protected Routing
 
-**Next up:** Story 2.1 — Backend User Management API
+**Next up:** Story 1.7 — E2E Tests — Authentication & Protected Routing
 
 See [PROJECT-STATUS.md](PROJECT-STATUS.md) for full details.
 
@@ -38,7 +38,7 @@ See [PROJECT-STATUS.md](PROJECT-STATUS.md) for full details.
 - [**Turborepo 2.8**](https://turbo.build/) — Monorepo build orchestration
 - [**pnpm**](https://pnpm.io/) — Package manager
 - [**Vitest**](https://vitest.dev/) — Unit & integration testing
-- [**Playwright**](https://playwright.dev/) — End-to-end testing _(future story)_
+- [**Playwright**](https://playwright.dev/) — End-to-end testing _(Story 1.7)_
 - [**Docker Compose**](https://docs.docker.com/compose/) — Local development environment
 
 For detailed architecture decisions and rationale, see the [architecture document](_bmad-output/planning-artifacts/architecture.md).

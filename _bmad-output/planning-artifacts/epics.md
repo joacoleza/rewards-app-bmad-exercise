@@ -520,9 +520,56 @@ So that I can securely access the features available to my role.
 **Then** it stores the current user's id, email, and role (decoded from JWT)
 **And** TanStack Query client is configured with default options (stale time, retry behavior)
 
+### Story 1.7: E2E Tests — Authentication & Protected Routing
+
+As a QA engineer,
+I want Playwright end-to-end tests covering the authentication and routing flows implemented in Epic 1,
+So that critical login, logout, and role-based access behaviors are verified against a running application before each release (NFR25, NFR26).
+
+**Acceptance Criteria:**
+
+**Given** Playwright is installed in the monorepo
+**When** I inspect playwright.config.ts at the repo root
+**Then** it targets `http://localhost:5173`, runs against the Chromium browser, and a `test:e2e` script is defined at the monorepo root
+**And** a globalSetup file seeds the test database with 1 manager and 2 employee users before tests run
+
+**Given** the Playwright test suite
+**When** I run `pnpm test:e2e` with the application running
+**Then** all e2e tests in this story pass
+**And** results are output in a CI-compatible format (junit or html reporter)
+
+**Given** a user with valid employee credentials
+**When** the Playwright test navigates to /login and submits the employee email and password
+**Then** the browser redirects to /dashboard
+**And** the sidebar shows Dashboard, Nominate, My Nominations
+**And** Pending Reviews, Users, and Audit Trail are NOT visible in the sidebar
+
+**Given** a user with valid manager credentials
+**When** the Playwright test navigates to /login and submits the manager email and password
+**Then** the browser redirects to /dashboard
+**And** all 6 sidebar items are visible: Dashboard, Nominate, My Nominations, Pending Reviews, Users, Audit Trail
+
+**Given** an attempt to log in with an incorrect password
+**When** the Playwright test submits the login form with a wrong password
+**Then** the error message "Invalid email or password" is displayed on the login page
+**And** the browser does NOT redirect away from /login
+
+**Given** an authenticated user session
+**When** the Playwright test clicks the Logout button in the header
+**Then** the browser redirects to /login
+**And** a subsequent navigation to /dashboard redirects back to /login (session fully cleared)
+
+**Given** an unauthenticated browser session
+**When** the Playwright test navigates directly to /dashboard
+**Then** the browser redirects to /login and no protected content is rendered
+
+**Given** an authenticated employee session
+**When** the Playwright test navigates directly to /users (manager-only route)
+**Then** the browser redirects to /dashboard and no user management content is rendered
+
 ---
 
-**Epic 1 Summary:** 6 stories created covering FR2, FR5, FR6, FR7, FR8, FR9, FR10, FR38 plus all foundation infrastructure. All stories are independently completable in sequence.
+**Epic 1 Summary:** 7 stories created covering FR2, FR5, FR6, FR7, FR8, FR9, FR10, FR38 plus all foundation infrastructure and E2E test harness. All stories are independently completable in sequence.
 
 ---
 
@@ -568,6 +615,21 @@ So that I can onboard employees and see who is registered on the platform.
 **Then** the route declares `{ preHandler: [requireRole('manager')] }`
 **And** JSON Schema is defined for request body validation and response serialization (FR31)
 
+**E2E Acceptance Criteria (Playwright):**
+
+**Given** a running application with an authenticated manager session
+**When** the Playwright test sends POST /api/users with a unique email, hashed password, and role 'employee'
+**Then** the API returns 201 with the new user object containing id, email, role, and createdAt (no password_hash)
+**And** GET /api/users includes the newly created user in the response list
+
+**Given** a running application with an authenticated manager session
+**When** the Playwright test sends POST /api/users with an email that already exists
+**Then** the API returns 409 with `{ "error": "CONFLICT", "field": "email" }`
+
+**Given** a running application with an authenticated employee session
+**When** the Playwright test sends POST /api/users or GET /api/users
+**Then** the API returns 403 for both requests
+
 ### Story 2.2: User Administration Page
 
 As a manager,
@@ -599,6 +661,17 @@ So that I can see who is onboarded and verify the organization roster.
 **Given** I am authenticated as an employee
 **When** I navigate to /users directly
 **Then** I am redirected to /dashboard and no user management content is visible
+
+**E2E Acceptance Criteria (Playwright):**
+
+**Given** a running application with a manager logged in
+**When** the Playwright test navigates to /users
+**Then** the user table is visible with at least the seeded users listed
+**And** each row displays Email, Role badge, and Created At columns
+
+**Given** a running application with an employee logged in
+**When** the Playwright test navigates to /users directly
+**Then** the browser redirects to /dashboard and no user table is rendered
 
 ### Story 2.3: Create User Form & Feedback
 
@@ -642,6 +715,18 @@ So that I can onboard employees and managers into the recognition platform.
 **Given** the create user form
 **When** I submit with Enter key after filling all fields
 **Then** the form submits correctly (keyboard accessibility)
+
+**E2E Acceptance Criteria (Playwright):**
+
+**Given** a manager is logged in and on the /users page
+**When** the Playwright test clicks "Add User", fills a unique email, a valid password, selects "Employee" role, and clicks Submit
+**Then** the success toast "User created successfully" appears and auto-dismisses
+**And** the user table refreshes to include the newly created user
+
+**Given** a manager submits the create user form with an email that already exists
+**When** the Playwright test submits the form
+**Then** a field-level error "A user with this email already exists" appears on the email field
+**And** no navigation occurs and the form remains filled
 
 ---
 
@@ -727,6 +812,17 @@ So that I can recognize a peer and track what happened to my nominations.
 **When** I check the API response time
 **Then** the response returns within 1 second for up to 500 registered employees (NFR5)
 
+**E2E Acceptance Criteria (Playwright):**
+
+**Given** a running application with an authenticated employee session
+**When** the Playwright test sends POST /api/nominations with valid nomineeName and reason
+**Then** the API returns 201 with the nomination object (id, nomineeName, reason, status: 'pending', createdAt)
+**And** GET /api/nominations includes the new nomination in the response sorted by createdAt descending
+
+**Given** an authenticated employee who already submitted a nomination for the same nominee within 30 days
+**When** the Playwright test sends a duplicate POST /api/nominations with the same nomineeName
+**Then** the API returns 409 with `{ "error": "DUPLICATE_NOMINATION", "field": "nomineeName" }` and a message including the next eligible date
+
 ### Story 3.3: Employee Dashboard
 
 As an employee,
@@ -766,6 +862,17 @@ So that I can track my recognition contributions and quickly start a new nominat
 **Given** the dashboard loads and becomes interactive
 **When** I measure time to interactive
 **Then** it is within 3 seconds on modern desktop browsers (NFR3)
+
+**E2E Acceptance Criteria (Playwright):**
+
+**Given** an authenticated employee with existing nominations in the seeded database
+**When** the Playwright test navigates to /dashboard
+**Then** the summary cards display counts (Submitted, Pending, Approved, Rejected) that match the seeded nomination data
+**And** clicking a non-zero count card navigates to /nominations
+
+**Given** an authenticated employee with zero nominations
+**When** the Playwright test navigates to /dashboard
+**Then** all summary cards display "0" and the "Nominate someone" CTA button is visible
 
 ### Story 3.4: Nomination Form & Submission
 
@@ -834,6 +941,22 @@ So that I can recognize their contribution quickly and with confidence that it w
 **When** measured during acceptance testing
 **Then** the full flow completes in under 2 minutes (NFR1)
 
+**E2E Acceptance Criteria (Playwright):**
+
+**Given** an authenticated employee on the /nominate page
+**When** the Playwright test fills in "Nominee Name" and "Reason" and clicks Submit
+**Then** the confirmation banner "Your nomination for [Name] has been submitted" is displayed
+**And** a success toast appears bottom-right and auto-dismisses after 4 seconds
+
+**Given** an authenticated employee who already nominated the same peer within 30 days
+**When** the Playwright test submits the nomination form with that peer's name
+**Then** the field-level duplicate error appears on the nominee name field with the next eligible date
+**And** the form remains filled and no navigation occurs
+
+**Given** the end-to-end nomination flow measured by Playwright
+**When** the test runs from /dashboard through nomination confirmation
+**Then** the full flow completes in under 2 minutes (NFR1)
+
 ### Story 3.5: My Nominations List
 
 As an employee,
@@ -868,6 +991,18 @@ So that I can track which recognitions are pending, approved, or rejected.
 **Given** the nominations list
 **When** I navigate using keyboard
 **Then** all elements are reachable and focus indicators are visible (UX-DR16)
+
+**E2E Acceptance Criteria (Playwright):**
+
+**Given** an authenticated employee with submitted nominations in the seeded database
+**When** the Playwright test navigates to /nominations
+**Then** each nomination row displays nominee name, reason preview, status badge (Pending/Approved/Rejected), and submission date
+**And** nominations are sorted with the most recently submitted first
+
+**Given** an authenticated employee with no submitted nominations
+**When** the Playwright test navigates to /nominations
+**Then** the empty state message "You haven't submitted any nominations yet" is visible
+**And** the "Nominate someone" CTA link is present and navigates to /nominate when clicked
 
 ---
 
@@ -925,6 +1060,21 @@ So that I can process the approval queue and track recognition activity across t
 **When** I attempt PATCH /api/nominations/:id
 **Then** I receive a 403 response (manager-only action)
 
+**E2E Acceptance Criteria (Playwright):**
+
+**Given** a running application with an authenticated manager session and a pending nomination in the database
+**When** the Playwright test sends PATCH /api/nominations/:id with `{ "status": "approved" }`
+**Then** the API returns 200 with the updated nomination (status: 'approved', reviewerId set, reviewedAt set)
+**And** a subsequent PATCH to the same nomination returns 409 CONFLICT with the finalized nomination state
+
+**Given** a running application with an authenticated manager session and a pending nomination
+**When** the Playwright test sends PATCH /api/nominations/:id with `{ "status": "rejected" }`
+**Then** the API returns 200 with the updated nomination (status: 'rejected')
+
+**Given** a running application with an authenticated employee session
+**When** the Playwright test sends PATCH /api/nominations/:id
+**Then** the API returns 403
+
 ### Story 4.2: Manager Dashboard
 
 As a manager,
@@ -957,6 +1107,17 @@ So that I can understand the recognition queue status at a glance and quickly ju
 **Given** the dashboard loads
 **When** I measure time to interactive
 **Then** it is within 3 seconds on modern desktop browsers (NFR3)
+
+**E2E Acceptance Criteria (Playwright):**
+
+**Given** an authenticated manager with pending nominations in the seeded database
+**When** the Playwright test navigates to /dashboard
+**Then** the "Pending Reviews" card displays the correct pending count matching the seeded data
+**And** clicking the "Pending Reviews" card navigates to /nominations
+
+**Given** an authenticated manager with no pending nominations
+**When** the Playwright test navigates to /dashboard
+**Then** the "Pending Reviews" card displays "0" in muted/zero state
 
 ### Story 4.3: Nominations Queue & Inline Approval
 
@@ -1017,6 +1178,23 @@ So that I can process the entire queue efficiently in under 5 minutes.
 **When** measured during acceptance testing
 **Then** the full approval workflow completes in under 5 minutes end-to-end (NFR2)
 
+**E2E Acceptance Criteria (Playwright):**
+
+**Given** an authenticated manager on the /nominations page with pending nominations
+**When** the Playwright test clicks the "Approve" button on a pending nomination row
+**Then** the row immediately shows a green "Approved" status badge
+**And** the Approve and Reject buttons are no longer visible on that row
+**And** the success toast "Nomination approved" appears and auto-dismisses
+
+**Given** an authenticated manager on the /nominations page with pending nominations
+**When** the Playwright test clicks the "Reject" button on a pending nomination row
+**Then** the row immediately shows a red "Rejected" status badge
+**And** the success toast "Nomination rejected" appears
+
+**Given** the end-to-end approval workflow measured by Playwright from login to decision
+**When** the test processes all pending nominations
+**Then** the full flow completes in under 5 minutes (NFR2)
+
 ### Story 4.4: Nomination History View
 
 As a manager,
@@ -1048,6 +1226,13 @@ So that I can review past decisions and maintain awareness of recognition activi
 **Given** the nomination history
 **When** I navigate using keyboard
 **Then** all elements including pagination controls are reachable and operable (UX-DR16)
+
+**E2E Acceptance Criteria (Playwright):**
+
+**Given** an authenticated manager who has approved and rejected nominations during the test session
+**When** the Playwright test views the /nominations page
+**Then** the reviewed nominations are visible with nominee name, nominator name, reason, status badge (Approved/Rejected), reviewer identity, and decision date
+**And** they are sorted by reviewed_at date, most recent first
 
 ---
 
@@ -1101,6 +1286,21 @@ So that I can investigate nomination and approval activity and reconstruct the f
 **When** I query with filters
 **Then** the response returns within acceptable time, leveraging the (entity_id, entity_type) index on audit_logs
 
+**E2E Acceptance Criteria (Playwright):**
+
+**Given** a running application with an authenticated manager session and existing audit entries from seeded actions
+**When** the Playwright test sends GET /api/audit
+**Then** the API returns a paginated list of entries with actorEmail resolved, action, entityType, entityId, payload, and createdAt
+
+**Given** an authenticated manager with audit entries for a specific nomination
+**When** the Playwright test sends GET /api/audit?entityType=NOMINATION&entityId=:id
+**Then** all audit entries for that nomination are returned in chronological order
+**And** the entries include both NOMINATION_CREATED and NOMINATION_APPROVED or NOMINATION_REJECTED actions
+
+**Given** a running application with an authenticated employee session
+**When** the Playwright test sends GET /api/audit
+**Then** the API returns 403
+
 ### Story 5.2: Audit Trail Search & Filter Page
 
 As a support/operations user,
@@ -1147,6 +1347,17 @@ So that I can quickly find and investigate specific nomination and approval acti
 **When** I clear all filters
 **Then** the full unfiltered audit trail is displayed (paginated)
 
+**E2E Acceptance Criteria (Playwright):**
+
+**Given** an authenticated manager on the /audit page with audit entries from seeded actions
+**When** the Playwright test enters a nominee name in the filter and applies it
+**Then** only audit entries matching that nominee are displayed in the results list
+**And** action labels are human-readable (e.g., "Submitted nomination") rather than raw action codes
+
+**Given** the audit page with a filter that matches no entries
+**When** the Playwright test applies the filter
+**Then** the empty state "No matching audit records found" is visible
+
 ### Story 5.3: Nomination Lifecycle Detail View
 
 As a support/operations user,
@@ -1183,6 +1394,19 @@ So that I can reconstruct exactly what happened — who submitted it, who review
 **Given** a support user investigating an issue
 **When** they use the audit filters + lifecycle view
 **Then** they can locate any nomination's full lifecycle within 5 minutes (success criterion from PRD)
+
+**E2E Acceptance Criteria (Playwright):**
+
+**Given** an authenticated manager on the /audit page with nomination audit entries
+**When** the Playwright test clicks on an audit entry for a nomination
+**Then** the lifecycle detail view appears inline showing all chronological events for that nomination
+**And** the submission event (nominator name, nominee name, reason, timestamp) is visible
+**And** if the nomination was reviewed, the decision event (manager name, timestamp, Approved/Rejected badge) is also visible
+
+**Given** an authenticated manager using the audit filter + lifecycle view
+**When** the Playwright test locates a nomination via filters and expands its lifecycle
+**Then** the complete timeline is displayed within a single page interaction without full navigation
+**And** the investigation can be completed within 5 minutes (NFR success criterion)
 
 ---
 

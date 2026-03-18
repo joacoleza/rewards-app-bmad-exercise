@@ -1,6 +1,6 @@
 # Project Status
 
-**BMAD Stage:** Implementation — Epic 1 complete, Epic 2 next
+**BMAD Stage:** Implementation — Epic 1 in progress (Story 1.7 E2E pending), Epic 2 backlog
 
 ## Current Sprint
 
@@ -12,12 +12,13 @@
 | 1.4 | Backend Role-Based Access Control | **Done** ✅ |
 | 1.5 | Frontend App Shell & Design System | **Done** ✅ |
 | 1.6 | Frontend Login & Protected Routing | **Done** ✅ |
+| 1.7 | E2E Tests — Authentication & Protected Routing | **Backlog** |
 
 ## Epic Progress
 
 | Epic | Stories | Status |
 |------|---------|--------|
-| 1. Project Foundation & Auth | 6 | **Done** ✅ (6/6) |
+| 1. Project Foundation & Auth | 7 | In Progress (6/7) — Story 1.7 (E2E) pending |
 | 2. User Management | 3 | Backlog |
 | 3. Employee Nomination Workflow | 5 | Backlog |
 | 4. Manager Approval Workflow | 4 | Backlog |
@@ -40,7 +41,8 @@
 - **State**: AuthContext (React Context for auth), TanStack Query client for server state
 - **API Client**: Fetch wrapper with automatic 401 → refresh → retry interceptor
 - **Error Handling**: Centralized `{ error, message, field, statusCode }` shape on all API errors
-- **Testing**: Vitest with 82 passing tests across all packages (51 API + 28 DB + 3 web)
+- **Testing**: Vitest with 82 passing tests across all packages (51 API + 28 DB + 3 web); Playwright e2e suite scoped in Story 1.7
+- **E2E Coverage**: Playwright e2e acceptance criteria added to all 14 pending stories (Epics 2–5) + new Story 1.7 for Epic 1 auth flows
 - **Build**: `pnpm turbo build` and `pnpm turbo test` both pass cleanly
 
 **Sprint tracking:** [sprint-status.yaml](_bmad-output/implementation-artifacts/sprint-status.yaml)
