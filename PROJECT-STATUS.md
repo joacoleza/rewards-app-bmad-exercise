@@ -71,4 +71,4 @@ Story specs live in [\_bmad-output/implementation-artifacts/](_bmad-output/imple
 - [**Story 1.4**](_bmad-output/implementation-artifacts/1-4-backend-role-based-access-control.md) — Backend Role-Based Access Control ✅
 - [**Story 1.5**](_bmad-output/implementation-artifacts/1-5-frontend-app-shell-and-design-system.md) — Frontend App Shell & Design System ✅
 - [**Story 1.6**](_bmad-output/implementation-artifacts/1-6-frontend-login-and-protected-routing.md) — Frontend Login & Protected Routing ✅ (code review completed; follow-up fixes applied and validated)
-- [**Story 1.7**](_bmad-output/implementation-artifacts/1-7-e2e-tests-authentication-and-protected-routing.md) — E2E Tests: Authentication & Protected Routing ✅ (adversarial review passed)
+- [**Story 1.7**](_bmad-output/implementation-artifacts/1-7-e2e-tests-authentication-and-protected-routing.md) — E2E Tests: Authentication & Protected Routing ✅ (adversarial review passed, QA complete)

@@ -1,6 +1,6 @@
 # Story 1.7: E2E Tests — Authentication & Protected Routing
 
-Status: qa_review
+Status: done
 
 ## Review Report (2026-03-18)
 
