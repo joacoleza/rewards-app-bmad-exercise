@@ -15,6 +15,9 @@ Thumbs.db
 # Claude
 .claude/
 
+# OpenCode
+.opencode/
+
 # BMAD local memory (user-specific config)
 _bmad/_memory/
 
