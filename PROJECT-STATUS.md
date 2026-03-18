@@ -41,7 +41,7 @@
 - **State**: AuthContext (React Context for auth), TanStack Query client for server state
 - **API Client**: Fetch wrapper with automatic 401 → refresh → retry interceptor
 - **Error Handling**: Centralized `{ error, message, field, statusCode }` shape on all API errors
-- **Testing**: Vitest with 82 passing tests across all packages (51 API + 28 DB + 3 web); Playwright e2e suite scoped in Story 1.7
+- **Testing**: Vitest with 113 passing tests across all packages (51 API + 28 DB + 34 web); Playwright e2e suite scoped in Story 1.7
 - **E2E Coverage**: Playwright e2e acceptance criteria added to all 14 pending stories (Epics 2–5) + new Story 1.7 for Epic 1 auth flows
 - **Build**: `pnpm turbo build` and `pnpm turbo test` both pass cleanly
 
