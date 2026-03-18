@@ -4,7 +4,7 @@ import { verifyAccessToken } from '../services/authService.js';
 
 declare module 'fastify' {
   interface FastifyRequest {
-    user: { sub: number; role: 'employee' | 'manager' };
+    user?: { sub: number; role: 'employee' | 'manager' };
   }
 }
 
@@ -27,10 +27,10 @@ export async function requireAuth(
 
   const token = header.split(' ')[1];
   try {
-    const decoded = verifyAccessToken(
-      token,
-      (request.server as unknown as { config: { JWT_SECRET: string } }).config.JWT_SECRET,
-    );
+    const decoded = verifyAccessToken(token, request.server.config.JWT_SECRET);
+    if (decoded.role !== 'employee' && decoded.role !== 'manager') {
+      throw new Error('Invalid role claim');
+    }
     request.user = { sub: decoded.sub, role: decoded.role };
   } catch {
     return reply.status(401).send({
@@ -53,10 +53,10 @@ export function requireRole(role: 'employee' | 'manager') {
   ): Promise<void> {
     // First, authenticate
     await requireAuth(request, reply);
-    if (reply.sent) return; // requireAuth already sent a 401
+    if (reply.sent || !request.user) return; // requireAuth already sent a 401
 
     // Then check role
-    if (request.user.role !== role && role === 'manager') {
+    if (request.user.role !== role) {
       return reply.status(403).send({
         error: 'FORBIDDEN',
         message: 'Insufficient permissions',

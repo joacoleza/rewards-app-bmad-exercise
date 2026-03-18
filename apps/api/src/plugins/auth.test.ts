@@ -35,10 +35,10 @@ function makeToken(payload: Record<string, unknown>, secret = process.env.JWT_SE
 
 beforeAll(async () => {
   app = buildApp({ skipEnv: true });
-  (app as unknown as Record<string, unknown>).config = {
-    DATABASE_URL: process.env.DATABASE_URL,
-    JWT_SECRET: process.env.JWT_SECRET,
-    JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET,
+  app.config = {
+    DATABASE_URL: process.env.DATABASE_URL!,
+    JWT_SECRET: process.env.JWT_SECRET!,
+    JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET!,
     NODE_ENV: 'test',
     PORT: 3001,
     LOG_LEVEL: 'error',
@@ -94,6 +94,20 @@ describe('requireAuth — GET /api/protected/any', () => {
       method: 'GET',
       url: '/api/protected/any',
       headers: { authorization: `Bearer ${tampered}` },
+    });
+    expect(res.statusCode).toBe(401);
+  });
+
+  it('returns 401 for token signed with the wrong secret', async () => {
+    const token = jwt.sign(
+      { sub: 1, role: 'employee' },
+      process.env.JWT_REFRESH_SECRET!,
+      { algorithm: 'HS256', expiresIn: '15m' },
+    );
+    const res = await app.inject({
+      method: 'GET',
+      url: '/api/protected/any',
+      headers: { authorization: `Bearer ${token}` },
     });
     expect(res.statusCode).toBe(401);
   });

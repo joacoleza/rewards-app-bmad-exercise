@@ -99,8 +99,10 @@ export function buildApp(opts?: { skipEnv?: boolean }) {
   // Auth routes
   app.register(authRoutes, { prefix: '/api/auth' });
 
-  // Protected test routes (RBAC validation)
-  app.register(protectedRoutes, { prefix: '/api/protected' });
+  // Protected test routes (RBAC validation) — not available in production
+  if (process.env.NODE_ENV !== 'production') {
+    app.register(protectedRoutes, { prefix: '/api/protected' });
+  }
 
   return app;
 }
