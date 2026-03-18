@@ -56,7 +56,7 @@ development_status:
   # Epic 2: User Management
   epic-2: in-progress
   2-1-backend-user-management-api: done
-  2-2-user-administration-page: backlog
+  2-2-user-administration-page: done
   2-3-create-user-form-and-feedback: backlog
   epic-2-retrospective: optional
 

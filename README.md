@@ -1,32 +1,32 @@
 # Rewards App — BMAD Exercise
 
-![Coverage](https://img.shields.io/badge/coverage-75%25-green)
-![Tests](https://img.shields.io/badge/tests-137_passing-brightgreen)
-![E2E](https://img.shields.io/badge/e2e-10_passing-brightgreen?logo=playwright)
+![Coverage](https://img.shields.io/badge/coverage-77%25-green)
+![Tests](https://img.shields.io/badge/tests-155_passing-brightgreen)
+![E2E](https://img.shields.io/badge/e2e-13_passing-brightgreen?logo=playwright)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue?logo=typescript&logoColor=white)
 ![Node](https://img.shields.io/badge/node-22_LTS-339933?logo=node.js&logoColor=white)
 ![BMAD](https://img.shields.io/badge/BMAD-v6.2.0-purple)
-![Stories](<https://img.shields.io/badge/stories-8%2F22_done_(36%25)-yellow>)
+![Stories](<https://img.shields.io/badge/stories-9%2F22_done_(41%25)-yellow>)
 
 Employee peer-recognition and rewards web app built using the [BMAD methodology](https://github.com/bmadcode/BMAD-METHOD) (`v6.2.0`). Employees nominate peers for meaningful contributions, managers approve nominations, and rewards are issued as gift cards.
 
 ## Project Status
 
-**Overall: 8 / 22 stories done (36%)**
+**Overall: 9 / 22 stories done (41%)**
 
 ```
 Epic 1 — Foundation & Auth   ██████████  7/7 ✅
-Epic 2 — User Management     ███░░░░░░░  1/3 (Story 2.1 done)
+Epic 2 — User Management     ██████░░░░  2/3 (Stories 2.1–2.2 done)
 Epic 3 — Nomination Workflow ░░░░░░░░░░  0/5
 Epic 4 — Approval Workflow   ░░░░░░░░░░  0/4
 Epic 5 — Audit Trail         ░░░░░░░░░░  0/3
 ```
 
-**Latest:** [Story 2.1 — Backend User Management API](_bmad-output/implementation-artifacts/2-1-backend-user-management-api.md) — done. Code review completed (3-layer adversarial), all 9 ACs MET, 5 patch fixes applied. 137 unit/integration tests + 10 E2E tests all passing.
+**Latest:** [Story 2.2 — User Administration Page](_bmad-output/implementation-artifacts/2-2-user-administration-page.md) — done. 3-round adversarial code review, all 7 ACs MET, 8 patch fixes applied. 155 unit/integration tests + 13 E2E tests all passing.
 
 **Epic 1 complete.** All 7 foundation stories done — auth, RBAC, frontend shell, login/routing, and E2E test harness.
 
-**Next up:** Story 2.2 — User Administration Page
+**Next up:** Story 2.3 — Create User Form & Feedback
 
 See [PROJECT-STATUS.md](PROJECT-STATUS.md) for full details.
 
