@@ -140,6 +140,16 @@ The workflow is wired to the SM agent via [\_bmad/\_config/agents/bmm-sm.customi
 
 All agents have a `critical_actions` customization that requires updating `README.md` and `PROJECT-STATUS.md` after completing any workflow, story, or significant task — keeping project status always current. Configured in each agent's customize yaml under [\_bmad/\_config/agents/](_bmad/_config/agents/).
 
+## AI Tools
+
+This project was built entirely through AI agents running BMAD skills and workflows, using a combination of tools and models across different iterations:
+
+- **[GitHub Copilot](https://github.com/features/copilot)** — agent mode with BMAD skills
+- **[Claude Code](https://docs.anthropic.com/en/docs/claude-code)** — CLI agent with BMAD skills
+- **[OpenCode](https://opencode.ai)** — open-source AI coding agent with BMAD skills
+
+Multiple models were used across iterations and workflow stages (planning, implementation, code review, QA), including **Claude Opus 4.6**, **Claude Sonnet 4.6**, **GPT 5.4**, and others.
+
 ## License
 
 This project is an exercise/demo and is not licensed for production use.
