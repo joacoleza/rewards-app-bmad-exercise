@@ -21,7 +21,7 @@ Epic 4 — Approval Workflow   ░░░░░░░░░░  0/4
 Epic 5 — Audit Trail         ░░░░░░░░░░  0/3
 ```
 
-**Latest completed:** [Story 1.7 — E2E Tests: Authentication & Protected Routing](_bmad-output/implementation-artifacts/1-7-e2e-tests-authentication-and-protected-routing.md) — adversarial review passed, ready for QA validation before release; robust CI-tested Playwright harness for all auth and RBAC flows.
+**Latest completed:** [Story 1.7 — E2E Tests: Authentication & Protected Routing](_bmad-output/implementation-artifacts/1-7-e2e-tests-authentication-and-protected-routing.md) — adversarial review passed, QA validation complete — all E2E tests passing in Playwright; coverage verified for authentication, protected routing, RBAC, and session clearance. Ready for release.
 
 **Epic 1 complete.** All 7 foundation stories done — auth, RBAC, frontend shell, login/routing, and E2E test harness.
 

@@ -4,15 +4,15 @@
 
 ## Current Sprint
 
-| Story | Title                                          | Status           |
-| ----- | ---------------------------------------------- | ---------------- |
-| 1.1   | Monorepo Initialization & Dev Environment      | **Done** ✅      |
-| 1.2   | Database Schema — Users & Audit Log            | **Done** ✅      |
-| 1.3   | Backend Authentication API                     | **Done** ✅      |
-| 1.4   | Backend Role-Based Access Control              | **Done** ✅      |
-| 1.5   | Frontend App Shell & Design System             | **Done** ✅      |
-| 1.6   | Frontend Login & Protected Routing             | **Done** ✅      |
-| 1.7   | E2E Tests — Authentication & Protected Routing | **QA Review** 🧪 |
+| Story | Title                                          | Status             |
+| ----- | ---------------------------------------------- | ------------------ |
+| 1.1   | Monorepo Initialization & Dev Environment      | **Done** ✅        |
+| 1.2   | Database Schema — Users & Audit Log            | **Done** ✅        |
+| 1.3   | Backend Authentication API                     | **Done** ✅        |
+| 1.4   | Backend Role-Based Access Control              | **Done** ✅        |
+| 1.5   | Frontend App Shell & Design System             | **Done** ✅        |
+| 1.6   | Frontend Login & Protected Routing             | **Done** ✅        |
+| 1.7   | E2E Tests — Authentication & Protected Routing | **QA Complete** ✅ |
 
 **Latest:** Story 1.7 implemented and reviewed on 2026-03-18 — adversarial code review passed; Playwright E2E harness at repo root, 6 tests covering auth and protected-routing flows, robust CI output, all passing.
 
