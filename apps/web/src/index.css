@@ -1,27 +1,29 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* ── Design Tokens (UX-DR2, UX-DR3, UX-DR4) ── */
 @theme {
   /* Primary palette – Indigo/Slate */
-  --color-primary: #4F46E5;
-  --color-primary-hover: #4338CA;
-  --color-primary-light: #E0E7FF;
-  --color-bg: #F8FAFC;
-  --color-surface: #FFFFFF;
-  --color-border: #E2E8F0;
-  --color-text: #0F172A;
-  --color-text-muted: #64748B;
+  --color-primary: #4f46e5;
+  --color-primary-hover: #4338ca;
+  --color-primary-light: #e0e7ff;
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-border: #e2e8f0;
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
 
   /* Semantic */
-  --color-success: #16A34A;
-  --color-warning: #F59E0B;
-  --color-error: #DC2626;
-  --color-info: #0EA5E9;
+  --color-success: #16a34a;
+  --color-warning: #f59e0b;
+  --color-error: #dc2626;
+  --color-info: #0ea5e9;
 
   /* Focus ring */
-  --color-focus: #6366F1;
+  --color-focus: #6366f1;
+}
 
-  /* Spacing (4px base) */
+/* ── Spacing tokens in :root to avoid colliding with Tailwind v4's --spacing-* scale ── */
+:root {
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
@@ -34,31 +36,43 @@
 }
 
 /* ── Base styles ── */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* Wrapped in @layer base so Tailwind utility classes (in @layer utilities) correctly win */
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-html {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-  color: var(--color-text);
-  background: var(--color-bg);
-}
+  html {
+    font-family:
+      'Inter',
+      system-ui,
+      -apple-system,
+      sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--color-text);
+    background: var(--color-bg);
+  }
 
-body {
-  min-height: 100vh;
-}
+  body {
+    min-height: 100vh;
+  }
 
-/* ── Typography (UX-DR3) ── */
-h1, h2, h3, h4, h5, h6 {
-  line-height: 1.25;
-}
+  /* ── Typography (UX-DR3) ── */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: 1.25;
+  }
 
-/* ── Focus ring (UX-DR16) ── */
-*:focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 2px;
+  /* ── Focus ring (UX-DR16) ── */
+  *:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
 }
