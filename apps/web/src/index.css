@@ -52,6 +52,11 @@ body {
   min-height: 100vh;
 }
 
+/* ── Typography (UX-DR3) ── */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.25;
+}
+
 /* ── Focus ring (UX-DR16) ── */
 *:focus-visible {
   outline: 2px solid var(--color-focus);

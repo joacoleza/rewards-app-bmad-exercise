@@ -34,7 +34,7 @@
 - **Seed Script**: Idempotent `db:seed` creates 1 manager + 2 employee users with bcryptjs-hashed passwords (12 rounds)
 - **Authentication**: JWT access tokens (15m, HS256) + httpOnly refresh cookies (8h); login/refresh/logout endpoints
 - **RBAC**: Fastify preHandler hooks — `requireAuth` and `requireRole('manager')` enforced on all protected endpoints
-- **Design System**: Tailwind CSS v4 with Indigo/Slate tokens; shadcn/ui components (Button, Input, Textarea, Label, Badge, Card, Separator)
+- **Design System**: Tailwind CSS v4 with Indigo/Slate tokens; shadcn/ui components (Button, Input, Textarea, Label, Badge, Card, Toast, Table, Separator, Avatar)
 - **App Shell**: Fixed 240px sidebar + header layout with role-based navigation
 - **Login Page**: Form with blur/submit validation, auto-refresh token restore, error handling
 - **Routing**: React Router with 6 routes; ProtectedRoute checks auth + role; auto-redirect
