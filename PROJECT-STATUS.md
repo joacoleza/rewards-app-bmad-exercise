@@ -40,7 +40,7 @@
 - **State**: AuthContext (React Context for auth), TanStack Query client for server state
 - **API Client**: Fetch wrapper with automatic 401 → refresh → retry interceptor
 - **Error Handling**: Centralized `{ error, message, field, statusCode }` shape on all API errors
-- **Testing**: Vitest with 82 passing tests across all packages
+- **Testing**: Vitest with 82 passing tests across all packages (51 API + 28 DB + 3 web)
 - **Build**: `pnpm turbo build` and `pnpm turbo test` both pass cleanly
 
 **Sprint tracking:** [sprint-status.yaml](_bmad-output/implementation-artifacts/sprint-status.yaml)
