@@ -1,7 +1,11 @@
+import dotenv from 'dotenv';
+import path from 'path';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import pg from 'pg';
 import { hash } from 'bcryptjs';
 import { users } from '../src/schema/users.js';
+
+dotenv.config({ path: path.resolve(process.cwd(), '../../.env') });
 
 const BCRYPT_ROUNDS = 12;
 

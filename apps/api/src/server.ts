@@ -1,3 +1,4 @@
+import './load-env.js'; // must be first — loads .env before any module reads process.env
 import { buildApp } from './app.js';
 
 const HOST = '0.0.0.0';
