@@ -1,32 +1,32 @@
 # Project Status
 
-**BMAD Stage:** Implementation — Epic 1 in progress (Story 1.7 E2E pending), Epic 2 backlog
+**BMAD Stage:** Implementation — Epic 1 complete, Epic 2 backlog
 
 ## Current Sprint
 
-| Story | Title | Status |
-|-------|-------|--------|
-| 1.1 | Monorepo Initialization & Dev Environment | **Done** ✅ |
-| 1.2 | Database Schema — Users & Audit Log | **Done** ✅ |
-| 1.3 | Backend Authentication API | **Done** ✅ |
-| 1.4 | Backend Role-Based Access Control | **Done** ✅ |
-| 1.5 | Frontend App Shell & Design System | **Done** ✅ |
-| 1.6 | Frontend Login & Protected Routing | **Done** ✅ |
-| 1.7 | E2E Tests — Authentication & Protected Routing | **Backlog** |
+| Story | Title                                          | Status        |
+| ----- | ---------------------------------------------- | ------------- |
+| 1.1   | Monorepo Initialization & Dev Environment      | **Done** ✅   |
+| 1.2   | Database Schema — Users & Audit Log            | **Done** ✅   |
+| 1.3   | Backend Authentication API                     | **Done** ✅   |
+| 1.4   | Backend Role-Based Access Control              | **Done** ✅   |
+| 1.5   | Frontend App Shell & Design System             | **Done** ✅   |
+| 1.6   | Frontend Login & Protected Routing             | **Done** ✅   |
+| 1.7   | E2E Tests — Authentication & Protected Routing | **Review** 🔍 |
 
-**Latest review:** Story 1.6 code review completed on 2026-03-18 — all 4 follow-up patch findings have now been fixed and validated.
+**Latest:** Story 1.7 implemented on 2026-03-18 — Playwright E2E harness installed at repo root; 6 tests covering auth and protected-routing flows, all passing.
 
-**Latest documentation sync:** 2026-03-18 — Stories 1.3, 1.4, and 1.5 implementation artifacts were updated to reflect completed implementation details and validation coverage.
+**Epic 1 status:** All 7 stories complete (1.7 pending code review). Foundation, auth, RBAC, frontend shell, login routing, and E2E harness are all in place.
 
 ## Epic Progress
 
-| Epic | Stories | Status |
-|------|---------|--------|
-| 1. Project Foundation & Auth | 7 | In Progress (6/7) — Story 1.7 (E2E) pending |
-| 2. User Management | 3 | Backlog |
-| 3. Employee Nomination Workflow | 5 | Backlog |
-| 4. Manager Approval Workflow | 4 | Backlog |
-| 5. Audit Trail & Investigation | 3 | Backlog |
+| Epic                            | Stories | Status                          |
+| ------------------------------- | ------- | ------------------------------- |
+| 1. Project Foundation & Auth    | 7       | **Complete** ✅ (1.7 in review) |
+| 2. User Management              | 3       | Backlog                         |
+| 3. Employee Nomination Workflow | 5       | Backlog                         |
+| 4. Manager Approval Workflow    | 4       | Backlog                         |
+| 5. Audit Trail & Investigation  | 3       | Backlog                         |
 
 ## What's Working
 
@@ -45,15 +45,15 @@
 - **State**: AuthContext (React Context for auth), TanStack Query client for server state
 - **API Client**: Fetch wrapper with automatic 401 → refresh → retry interceptor and auth-expiry event handling on failed refresh
 - **Error Handling**: Centralized `{ error, message, field, statusCode }` shape on all API errors
-- **Testing**: Vitest with 113 passing tests across all packages (51 API + 28 DB + 34 web); Playwright e2e suite scoped in Story 1.7
-- **E2E Coverage**: Playwright e2e acceptance criteria added to all 14 pending stories (Epics 2–5) + new Story 1.7 for Epic 1 auth flows
-- **Build**: `pnpm turbo build` and `pnpm turbo test` both pass cleanly
+- **Unit Tests**: Vitest with 116 passing tests across all packages (51 API + 28 DB + 37 web)
+- **E2E Tests**: Playwright at repo root — 6 tests covering employee/manager login, wrong-password error, logout session clearance, unauthenticated redirect, and role-based route guarding; `pnpm test:e2e` runs against live dev servers
+- **Build**: `pnpm build` and `pnpm test` both pass cleanly
 
 **Sprint tracking:** [sprint-status.yaml](_bmad-output/implementation-artifacts/sprint-status.yaml)
 
 ## Planning Artifacts
 
-All planning documents live in [_bmad-output/planning-artifacts/](_bmad-output/planning-artifacts/):
+All planning documents live in [\_bmad-output/planning-artifacts/](_bmad-output/planning-artifacts/):
 
 - [**PRD**](_bmad-output/planning-artifacts/prd.md) — Product Requirements Document
 - [**PRD Validation Report**](_bmad-output/planning-artifacts/prd-validation-report.md) — PRD quality review findings
@@ -63,7 +63,7 @@ All planning documents live in [_bmad-output/planning-artifacts/](_bmad-output/p
 
 ## Implementation Artifacts
 
-Story specs live in [_bmad-output/implementation-artifacts/](_bmad-output/implementation-artifacts/):
+Story specs live in [\_bmad-output/implementation-artifacts/](_bmad-output/implementation-artifacts/):
 
 - [**Story 1.1**](_bmad-output/implementation-artifacts/1-1-monorepo-initialization-and-dev-environment.md) — Monorepo Initialization & Dev Environment ✅
 - [**Story 1.2**](_bmad-output/implementation-artifacts/1-2-database-schema-users-and-audit-log.md) — Database Schema — Users & Audit Log ✅
@@ -71,3 +71,4 @@ Story specs live in [_bmad-output/implementation-artifacts/](_bmad-output/implem
 - [**Story 1.4**](_bmad-output/implementation-artifacts/1-4-backend-role-based-access-control.md) — Backend Role-Based Access Control ✅
 - [**Story 1.5**](_bmad-output/implementation-artifacts/1-5-frontend-app-shell-and-design-system.md) — Frontend App Shell & Design System ✅
 - [**Story 1.6**](_bmad-output/implementation-artifacts/1-6-frontend-login-and-protected-routing.md) — Frontend Login & Protected Routing ✅ (code review completed; follow-up fixes applied and validated)
+- [**Story 1.7**](_bmad-output/implementation-artifacts/1-7-e2e-tests-authentication-and-protected-routing.md) — E2E Tests: Authentication & Protected Routing 🔍 (in review)

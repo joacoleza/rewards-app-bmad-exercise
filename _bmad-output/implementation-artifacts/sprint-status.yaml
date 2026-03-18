@@ -36,7 +36,7 @@
 
 generated: 2026-03-17
 last_updated: 2026-03-18
-project: bmad  
+project: bmad
 project_key: NOKEY
 tracking_system: file-system
 story_location: _bmad-output/implementation-artifacts
@@ -50,6 +50,7 @@ development_status:
   1-4-backend-role-based-access-control: done
   1-5-frontend-app-shell-and-design-system: done
   1-6-frontend-login-and-protected-routing: done
+  1-7-e2e-tests-authentication-and-protected-routing: review
   epic-1-retrospective: optional
 
   # Epic 2: User Management

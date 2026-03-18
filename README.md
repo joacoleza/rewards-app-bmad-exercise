@@ -1,31 +1,33 @@
 # Rewards App — BMAD Exercise
 
-![Coverage](https://img.shields.io/badge/coverage-66%25-green)
-![Tests](https://img.shields.io/badge/tests-113_passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-122_passing-brightgreen)
+![E2E](https://img.shields.io/badge/e2e-6_passing-brightgreen?logo=playwright)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue?logo=typescript&logoColor=white)
 ![Node](https://img.shields.io/badge/node-22_LTS-339933?logo=node.js&logoColor=white)
 ![BMAD](https://img.shields.io/badge/BMAD-v6.2.0-purple)
-![Stories](<https://img.shields.io/badge/stories-6%2F22_(27%25)-yellow>)
+![Stories](<https://img.shields.io/badge/stories-7%2F22_(32%25)-yellow>)
 
 Employee peer-recognition and rewards web app built using the [BMAD methodology](https://github.com/bmadcode/BMAD-METHOD) (`v6.2.0`). Employees nominate peers for meaningful contributions, managers approve nominations, and rewards are issued as gift cards.
 
 ## Project Status
 
-**Overall: 6 / 22 stories done (27%)**
+**Overall: 7 / 22 stories done (32%)**
 
 ```
-Epic 1 — Foundation & Auth  █████████░  6/7
-Epic 2 — User Management    ░░░░░░░░░░  0/3
-Epic 3 — Nomination Workflow░░░░░░░░░░  0/5
-Epic 4 — Approval Workflow  ░░░░░░░░░░  0/4
-Epic 5 — Audit Trail        ░░░░░░░░░░  0/3
+Epic 1 — Foundation & Auth   ██████████  7/7 ✅
+Epic 2 — User Management     ░░░░░░░░░░  0/3
+Epic 3 — Nomination Workflow ░░░░░░░░░░  0/5
+Epic 4 — Approval Workflow   ░░░░░░░░░░  0/4
+Epic 5 — Audit Trail         ░░░░░░░░░░  0/3
 ```
 
-**Latest completed:** [Story 1.6 — Frontend Login & Protected Routing](_bmad-output/implementation-artifacts/1-6-frontend-login-and-protected-routing.md)
+**Latest completed:** [Story 1.7 — E2E Tests: Authentication & Protected Routing](_bmad-output/implementation-artifacts/1-7-e2e-tests-authentication-and-protected-routing.md)
 
-**Next up:** `Story 1.7 — E2E Tests — Authentication & Protected Routing`
+**Epic 1 complete.** All 7 foundation stories done — auth, RBAC, frontend shell, login/routing, and E2E test harness.
 
-See [PROJECT-STATUS.md](PROJECT-STATUS.md) for full details and the Story 1.6 review summary.
+**Next up:** Epic 2 — User Management (`Story 2.1 — Backend User Management API`)
+
+See [PROJECT-STATUS.md](PROJECT-STATUS.md) for full details.
 
 ## Tech Stack
 
@@ -64,15 +66,35 @@ pnpm --filter @rewards-app/db db:push
 pnpm --filter @rewards-app/db db:seed
 
 # 6. Start dev servers (web on :5173, api on :3001)
-pnpm turbo dev
+pnpm dev
 
 # 7. Verify health endpoint
 curl http://localhost:3001/api/health
 # → { "status": "ok" }
 
-# 8. Run tests
-pnpm turbo test
+# 8. Run unit tests
+pnpm test
+
+# 9. Run E2E tests (requires dev servers running)
+pnpm test:e2e
 ```
+
+## E2E Testing
+
+E2E tests run against the live dev servers (Vite on `:5173` + API on `:3001`). Start them first with `pnpm dev`, then:
+
+```bash
+# Headless (default — CI-style output)
+pnpm test:e2e
+
+# Headed — watch the browser execute each test
+pnpm test:e2e --headed
+
+# UI mode — interactive timeline, trace viewer, re-run individual tests
+pnpm exec playwright test --ui
+```
+
+UI mode is the most useful for development: it shows a live browser alongside a test timeline and lets you step through each action, inspect locators, and replay traces on failure.
 
 ## Test Users
 

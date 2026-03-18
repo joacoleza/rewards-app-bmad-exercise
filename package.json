@@ -9,13 +9,20 @@
     "build": "turbo build",
     "test": "turbo test",
     "test:unit": "turbo test:unit",
-    "test:e2e": "turbo test:e2e",
+    "test:e2e": "playwright test",
     "test:ci": "turbo test:ci",
     "update-badges": "node scripts/update-badges.mjs",
     "format": "prettier --write ."
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/bcryptjs": "^3.0.0",
+    "@types/pg": "^8.11.11",
     "@vitest/coverage-v8": "^3.2.0",
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.3.1",
+    "drizzle-orm": "^0.45.1",
+    "pg": "^8.13.3",
     "prettier": "^3.5.3",
     "turbo": "^2.4.4",
     "typescript": "^5.8.2"
