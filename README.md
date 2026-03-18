@@ -1,5 +1,6 @@
 # Rewards App — BMAD Exercise
 
+![Coverage](https://img.shields.io/badge/coverage-75%25-green)
 ![Tests](https://img.shields.io/badge/tests-137_passing-brightgreen)
 ![E2E](https://img.shields.io/badge/e2e-10_passing-brightgreen?logo=playwright)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue?logo=typescript&logoColor=white)
