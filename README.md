@@ -1,7 +1,7 @@
 # Rewards App — BMAD Exercise
 
-![Coverage](https://img.shields.io/badge/coverage-50%25-yellow)
-![Tests](https://img.shields.io/badge/tests-61_passing-brightgreen)
+![Coverage](https://img.shields.io/badge/coverage-51%25-yellow)
+![Tests](https://img.shields.io/badge/tests-65_passing-brightgreen)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue?logo=typescript&logoColor=white)
 ![Node](https://img.shields.io/badge/node-22_LTS-339933?logo=node.js&logoColor=white)
 ![BMAD](https://img.shields.io/badge/BMAD-v6.2.0-purple)
