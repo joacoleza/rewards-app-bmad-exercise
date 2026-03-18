@@ -1,6 +1,21 @@
 # Story 1.7: E2E Tests — Authentication & Protected Routing
 
-Status: review
+Status: qa_review
+
+## Review Report (2026-03-18)
+
+Story 1.7 underwent adversarial code review:
+
+- All acceptance criteria (AC1–AC8) fulfilled and passing.
+- Robust Playwright E2E setup for authentication and protected routing, CI-compatible output.
+- Tests cover employee/manager login, wrong-password handling, logout/session clearing, RBAC and route-guarding.
+- Minor edge cases flagged (no blocking): input validation (empty/invalid fields), deep-link RBAC, session expiry.
+- Sidebar selectors are precise, but fragile if UI labels change frequently.
+- DB seed logic is idempotent, clean error if misconfigured, and no destructive actions taken.
+- No architectural or API flaws detected.
+- Ready for merge/release; recommend future extension for input validation and expanded RBAC E2E.
+
+---
 
 ## Story
 

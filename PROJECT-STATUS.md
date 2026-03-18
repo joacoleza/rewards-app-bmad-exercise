@@ -4,29 +4,29 @@
 
 ## Current Sprint
 
-| Story | Title                                          | Status        |
-| ----- | ---------------------------------------------- | ------------- |
-| 1.1   | Monorepo Initialization & Dev Environment      | **Done** ✅   |
-| 1.2   | Database Schema — Users & Audit Log            | **Done** ✅   |
-| 1.3   | Backend Authentication API                     | **Done** ✅   |
-| 1.4   | Backend Role-Based Access Control              | **Done** ✅   |
-| 1.5   | Frontend App Shell & Design System             | **Done** ✅   |
-| 1.6   | Frontend Login & Protected Routing             | **Done** ✅   |
-| 1.7   | E2E Tests — Authentication & Protected Routing | **Review** 🔍 |
+| Story | Title                                          | Status           |
+| ----- | ---------------------------------------------- | ---------------- |
+| 1.1   | Monorepo Initialization & Dev Environment      | **Done** ✅      |
+| 1.2   | Database Schema — Users & Audit Log            | **Done** ✅      |
+| 1.3   | Backend Authentication API                     | **Done** ✅      |
+| 1.4   | Backend Role-Based Access Control              | **Done** ✅      |
+| 1.5   | Frontend App Shell & Design System             | **Done** ✅      |
+| 1.6   | Frontend Login & Protected Routing             | **Done** ✅      |
+| 1.7   | E2E Tests — Authentication & Protected Routing | **QA Review** 🧪 |
 
-**Latest:** Story 1.7 implemented on 2026-03-18 — Playwright E2E harness installed at repo root; 6 tests covering auth and protected-routing flows, all passing.
+**Latest:** Story 1.7 implemented and reviewed on 2026-03-18 — adversarial code review passed; Playwright E2E harness at repo root, 6 tests covering auth and protected-routing flows, robust CI output, all passing.
 
-**Epic 1 status:** All 7 stories complete (1.7 pending code review). Foundation, auth, RBAC, frontend shell, login routing, and E2E harness are all in place.
+**Epic 1 status:** All 7 stories complete (1.7 reviewed and done). Foundation, auth, RBAC, frontend shell, login routing, and E2E test harness (adversarial review passed) are all in place.
 
 ## Epic Progress
 
-| Epic                            | Stories | Status                          |
-| ------------------------------- | ------- | ------------------------------- |
-| 1. Project Foundation & Auth    | 7       | **Complete** ✅ (1.7 in review) |
-| 2. User Management              | 3       | Backlog                         |
-| 3. Employee Nomination Workflow | 5       | Backlog                         |
-| 4. Manager Approval Workflow    | 4       | Backlog                         |
-| 5. Audit Trail & Investigation  | 3       | Backlog                         |
+| Epic                            | Stories | Status                         |
+| ------------------------------- | ------- | ------------------------------ |
+| 1. Project Foundation & Auth    | 7       | **Complete** ✅ (all reviewed) |
+| 2. User Management              | 3       | Backlog                        |
+| 3. Employee Nomination Workflow | 5       | Backlog                        |
+| 4. Manager Approval Workflow    | 4       | Backlog                        |
+| 5. Audit Trail & Investigation  | 3       | Backlog                        |
 
 ## What's Working
 
@@ -71,4 +71,4 @@ Story specs live in [\_bmad-output/implementation-artifacts/](_bmad-output/imple
 - [**Story 1.4**](_bmad-output/implementation-artifacts/1-4-backend-role-based-access-control.md) — Backend Role-Based Access Control ✅
 - [**Story 1.5**](_bmad-output/implementation-artifacts/1-5-frontend-app-shell-and-design-system.md) — Frontend App Shell & Design System ✅
 - [**Story 1.6**](_bmad-output/implementation-artifacts/1-6-frontend-login-and-protected-routing.md) — Frontend Login & Protected Routing ✅ (code review completed; follow-up fixes applied and validated)
-- [**Story 1.7**](_bmad-output/implementation-artifacts/1-7-e2e-tests-authentication-and-protected-routing.md) — E2E Tests: Authentication & Protected Routing 🔍 (in review)
+- [**Story 1.7**](_bmad-output/implementation-artifacts/1-7-e2e-tests-authentication-and-protected-routing.md) — E2E Tests: Authentication & Protected Routing ✅ (adversarial review passed)
