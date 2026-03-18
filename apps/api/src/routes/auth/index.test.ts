@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, vi, beforeAll, afterAll, beforeEach } from 'vitest';
 import { buildApp } from '../../app.js';
 import { hash } from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -248,6 +248,110 @@ describe('POST /api/auth/refresh', () => {
     );
     expect(refreshCookie).toBeDefined();
     expect(refreshCookie!.value).toBe('');
+  });
+});
+
+describe('POST /api/auth/refresh — edge cases', () => {
+  it('returns 401 when user has been deleted after token was issued', async () => {
+    // Create a valid refresh token for a user that exists
+    const validToken = jwt.sign(
+      { sub: 999 },
+      process.env.JWT_REFRESH_SECRET!,
+      { algorithm: 'HS256', expiresIn: '8h' },
+    );
+
+    // Mock: token decode succeeds but user lookup returns empty
+    mockSelectReturn.limit.mockResolvedValueOnce([]);
+
+    const res = await app.inject({
+      method: 'POST',
+      url: '/api/auth/refresh',
+      cookies: { refreshToken: validToken },
+    });
+
+    expect(res.statusCode).toBe(401);
+    const body = res.json();
+    expect(body.error).toBe('UNAUTHORIZED');
+    expect(body.message).toBe('Invalid refresh token');
+
+    // Verify cookie is cleared
+    const refreshCookie = res.cookies.find(
+      (c: { name: string }) => c.name === 'refreshToken',
+    );
+    expect(refreshCookie).toBeDefined();
+    expect(refreshCookie!.value).toBe('');
+  });
+});
+
+describe('POST /api/auth/login — audit log failure', () => {
+  it('still returns 200 when audit log write fails', async () => {
+    mockSelectReturn.limit.mockResolvedValueOnce([mockUser]);
+    // Make the audit insert throw
+    mockInsertReturn.values.mockRejectedValueOnce(new Error('DB write failed'));
+
+    const res = await app.inject({
+      method: 'POST',
+      url: '/api/auth/login',
+      payload: { email: 'admin@bmad.com', password: 'password123' },
+    });
+
+    // Login should succeed despite audit failure
+    expect(res.statusCode).toBe(200);
+    expect(res.json().accessToken).toBeDefined();
+    expect(res.json().user.id).toBe(1);
+  });
+});
+
+describe('POST /api/auth/login — validation edge cases', () => {
+  it('returns 400 for invalid email format', async () => {
+    const res = await app.inject({
+      method: 'POST',
+      url: '/api/auth/login',
+      payload: { email: 'not-an-email', password: 'password123' },
+    });
+
+    expect(res.statusCode).toBe(400);
+    const body = res.json();
+    expect(body.error).toBe('VALIDATION_ERROR');
+    expect(body.field).toBe('email');
+  });
+
+  it('returns 400 for completely empty body', async () => {
+    const res = await app.inject({
+      method: 'POST',
+      url: '/api/auth/login',
+      payload: {},
+    });
+
+    expect(res.statusCode).toBe(400);
+    const body = res.json();
+    expect(body.error).toBe('VALIDATION_ERROR');
+  });
+
+  it('strips extra properties (additionalProperties: false) and succeeds', async () => {
+    mockSelectReturn.limit.mockResolvedValueOnce([mockUser]);
+
+    const res = await app.inject({
+      method: 'POST',
+      url: '/api/auth/login',
+      payload: { email: 'admin@bmad.com', password: 'password123', extraField: 'hack' },
+    });
+
+    // Fastify's default behavior removes additional properties rather than rejecting
+    expect(res.statusCode).toBe(200);
+  });
+
+  it('returns 400 for password with zero length (empty string)', async () => {
+    const res = await app.inject({
+      method: 'POST',
+      url: '/api/auth/login',
+      payload: { email: 'admin@bmad.com', password: '' },
+    });
+
+    expect(res.statusCode).toBe(400);
+    const body = res.json();
+    expect(body.error).toBe('VALIDATION_ERROR');
+    expect(body.field).toBe('password');
   });
 });
 
