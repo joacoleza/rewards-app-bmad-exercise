@@ -47,6 +47,25 @@ describe('authService', () => {
       const token = generateAccessToken({ id: 1, role: 'employee' }, TEST_SECRET);
       expect(() => verifyAccessToken(token, 'wrong-secret-16-chars!')).toThrow();
     });
+
+    it('throws on token with missing sub claim', () => {
+      const token = jwt.sign({ role: 'manager' }, TEST_SECRET, {
+        algorithm: 'HS256',
+        expiresIn: '15m',
+      });
+      expect(() => verifyAccessToken(token, TEST_SECRET)).toThrow(
+        'Invalid access token payload',
+      );
+    });
+
+    it('throws on string payload token', () => {
+      const token = jwt.sign('string-payload', TEST_SECRET, {
+        algorithm: 'HS256',
+      });
+      expect(() => verifyAccessToken(token, TEST_SECRET)).toThrow(
+        'Invalid access token payload',
+      );
+    });
   });
 
   describe('generateRefreshToken / verifyRefreshToken', () => {
@@ -62,6 +81,16 @@ describe('authService', () => {
         expiresIn: '-1s',
       });
       expect(() => verifyRefreshToken(token, TEST_REFRESH_SECRET)).toThrow();
+    });
+
+    it('throws on token with missing sub claim', () => {
+      const token = jwt.sign({ foo: 'bar' }, TEST_REFRESH_SECRET, {
+        algorithm: 'HS256',
+        expiresIn: '8h',
+      });
+      expect(() => verifyRefreshToken(token, TEST_REFRESH_SECRET)).toThrow(
+        'Invalid refresh token payload',
+      );
     });
   });
 });

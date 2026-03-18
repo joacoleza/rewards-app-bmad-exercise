@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest';
 import { buildApp } from '../../app.js';
 import { hash } from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import type { FastifyInstance } from 'fastify';
 
 // --- Mock @rewards-app/db ---
@@ -142,7 +143,7 @@ describe('POST /api/auth/login', () => {
     expect(body.message).toBe('Invalid email or password');
   });
 
-  it('returns 400 for missing email', async () => {
+  it('returns 400 for missing email with field = email', async () => {
     const res = await app.inject({
       method: 'POST',
       url: '/api/auth/login',
@@ -152,9 +153,10 @@ describe('POST /api/auth/login', () => {
     expect(res.statusCode).toBe(400);
     const body = res.json();
     expect(body.error).toBe('VALIDATION_ERROR');
+    expect(body.field).toBe('email');
   });
 
-  it('returns 400 for missing password', async () => {
+  it('returns 400 for missing password with field = password', async () => {
     const res = await app.inject({
       method: 'POST',
       url: '/api/auth/login',
@@ -164,6 +166,7 @@ describe('POST /api/auth/login', () => {
     expect(res.statusCode).toBe(400);
     const body = res.json();
     expect(body.error).toBe('VALIDATION_ERROR');
+    expect(body.field).toBe('password');
   });
 });
 
@@ -204,7 +207,7 @@ describe('POST /api/auth/refresh', () => {
     expect(res.statusCode).toBe(401);
   });
 
-  it('returns 401 for invalid refresh token', async () => {
+  it('returns 401 for invalid refresh token and clears cookie', async () => {
     const res = await app.inject({
       method: 'POST',
       url: '/api/auth/refresh',
@@ -212,6 +215,39 @@ describe('POST /api/auth/refresh', () => {
     });
 
     expect(res.statusCode).toBe(401);
+
+    // Verify cookie is cleared
+    const refreshCookie = res.cookies.find(
+      (c: { name: string }) => c.name === 'refreshToken',
+    );
+    expect(refreshCookie).toBeDefined();
+    expect(refreshCookie!.value).toBe('');
+  });
+
+  it('returns 401 for expired refresh token and clears cookie', async () => {
+    // Create a real JWT that is already expired
+    const expiredToken = jwt.sign(
+      { sub: mockUser.id },
+      process.env.JWT_REFRESH_SECRET!,
+      { algorithm: 'HS256', expiresIn: '-1s' },
+    );
+
+    const res = await app.inject({
+      method: 'POST',
+      url: '/api/auth/refresh',
+      cookies: { refreshToken: expiredToken },
+    });
+
+    expect(res.statusCode).toBe(401);
+    const body = res.json();
+    expect(body.error).toBe('UNAUTHORIZED');
+
+    // Verify cookie is cleared
+    const refreshCookie = res.cookies.find(
+      (c: { name: string }) => c.name === 'refreshToken',
+    );
+    expect(refreshCookie).toBeDefined();
+    expect(refreshCookie!.value).toBe('');
   });
 });
 
@@ -225,12 +261,12 @@ describe('POST /api/auth/logout', () => {
     expect(res.statusCode).toBe(200);
     expect(res.json().message).toBe('Logged out successfully');
 
-    // Check that the refreshToken cookie was cleared
+    // Verify the refreshToken cookie was cleared
     const cookies = res.cookies;
     const refreshCookie = cookies.find(
       (c: { name: string }) => c.name === 'refreshToken',
     );
     expect(refreshCookie).toBeDefined();
-    // When clearing, the value should be empty or the cookie should have expired
+    expect(refreshCookie!.value).toBe('');
   });
 });

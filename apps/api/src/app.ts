@@ -48,11 +48,11 @@ export function buildApp(opts?: { skipEnv?: boolean }) {
   // ------ Centralized Error Handler ------
   app.setErrorHandler((error: Error & { validation?: Array<{ params?: { missingProperty?: string }; instancePath?: string }>; statusCode?: number; code?: string; field?: string }, request, reply) => {
     // Fastify JSON Schema validation errors
-    if ('validation' in error && error.validation) {
+    if ('validation' in error && Array.isArray(error.validation) && error.validation.length > 0) {
       const firstError = error.validation[0];
       const field =
         firstError?.params?.missingProperty ||
-        firstError?.instancePath?.replace('/', '') ||
+        firstError?.instancePath?.replace(/^\//, '').split('/').pop() ||
         null;
       return reply.status(400).send({
         error: 'VALIDATION_ERROR',
@@ -68,7 +68,7 @@ export function buildApp(opts?: { skipEnv?: boolean }) {
     }
 
     // Errors with statusCode set (e.g. via reply.status().send())
-    if (error.statusCode && error.statusCode < 500) {
+    if (error.statusCode && error.statusCode >= 400 && error.statusCode < 500) {
       return reply.status(error.statusCode).send({
         error: error.code || 'ERROR',
         message: error.message,

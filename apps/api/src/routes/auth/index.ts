@@ -3,17 +3,33 @@ import { eq } from 'drizzle-orm';
 import { db, users } from '@rewards-app/db';
 import {
   verifyPassword,
+  hashPassword,
   generateAccessToken,
   generateRefreshToken,
   verifyRefreshToken,
+  REFRESH_TOKEN_EXPIRY_SECONDS,
 } from '../../services/authService.js';
 import { logAuditEvent } from '../../services/auditService.js';
 import { loginSchema, refreshSchema, logoutSchema } from './schema.js';
 
 const REFRESH_COOKIE_NAME = 'refreshToken';
-const REFRESH_MAX_AGE = 8 * 60 * 60; // 8 hours in seconds
+
+/** Dummy hash used for constant-time comparison when user is not found */
+let DUMMY_HASH: string | null = null;
 
 export default async function authRoutes(fastify: FastifyInstance) {
+  // Pre-compute a dummy bcrypt hash for timing-safe "user not found" path
+  if (!DUMMY_HASH) {
+    DUMMY_HASH = await hashPassword('dummy-password-for-timing');
+  }
+
+  /** Cookie options shared between setCookie and clearCookie */
+  const cookieOpts = {
+    httpOnly: true,
+    secure: fastify.config?.NODE_ENV === 'production',
+    sameSite: 'strict' as const,
+    path: '/api/auth',
+  };
   /**
    * POST /api/auth/login
    */
@@ -25,14 +41,19 @@ export default async function authRoutes(fastify: FastifyInstance) {
     async (request, reply) => {
       const { email, password } = request.body;
 
+      // Normalize email to lowercase for case-insensitive lookup
+      const normalizedEmail = email.toLowerCase().trim();
+
       // Look up user by email
       const [user] = await db
         .select()
         .from(users)
-        .where(eq(users.email, email))
+        .where(eq(users.email, normalizedEmail))
         .limit(1);
 
       if (!user) {
+        // Constant-time: run bcrypt against dummy hash to prevent timing oracle
+        await verifyPassword(password, DUMMY_HASH!);
         return reply.status(401).send({
           error: 'UNAUTHORIZED',
           message: 'Invalid email or password',
@@ -62,22 +83,23 @@ export default async function authRoutes(fastify: FastifyInstance) {
         fastify.config.JWT_REFRESH_SECRET,
       );
 
-      // Audit log — FR38
-      await logAuditEvent(db, {
-        actorId: user.id,
-        action: 'USER_LOGIN',
-        entityType: 'USER',
-        entityId: user.id,
-        payload: { email: user.email },
-      });
+      // Audit log — FR38 (non-blocking: don't fail login if audit write fails)
+      try {
+        await logAuditEvent(db, {
+          actorId: user.id,
+          action: 'USER_LOGIN',
+          entityType: 'USER',
+          entityId: user.id,
+          payload: { email: user.email },
+        });
+      } catch (err) {
+        request.log.warn({ err, userId: user.id }, 'Audit log write failed — login proceeding');
+      }
 
       // Set refresh token cookie
       reply.setCookie(REFRESH_COOKIE_NAME, refreshToken, {
-        httpOnly: true,
-        secure: fastify.config.NODE_ENV === 'production',
-        sameSite: 'strict',
-        path: '/api/auth',
-        maxAge: REFRESH_MAX_AGE,
+        ...cookieOpts,
+        maxAge: REFRESH_TOKEN_EXPIRY_SECONDS,
       });
 
       return reply.send({
@@ -113,7 +135,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
         .limit(1);
 
       if (!user) {
-        reply.clearCookie(REFRESH_COOKIE_NAME, { path: '/api/auth' });
+        reply.clearCookie(REFRESH_COOKIE_NAME, cookieOpts);
         return reply.status(401).send({
           error: 'UNAUTHORIZED',
           message: 'Invalid refresh token',
@@ -129,7 +151,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
 
       return reply.send({ accessToken });
     } catch {
-      reply.clearCookie(REFRESH_COOKIE_NAME, { path: '/api/auth' });
+      reply.clearCookie(REFRESH_COOKIE_NAME, cookieOpts);
       return reply.status(401).send({
         error: 'UNAUTHORIZED',
         message: 'Invalid or expired refresh token',
@@ -143,7 +165,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
    * POST /api/auth/logout
    */
   fastify.post('/logout', { schema: logoutSchema }, async (_request, reply) => {
-    reply.clearCookie(REFRESH_COOKIE_NAME, { path: '/api/auth' });
+    reply.clearCookie(REFRESH_COOKIE_NAME, cookieOpts);
     return reply.send({ message: 'Logged out successfully' });
   });
 }

@@ -5,6 +5,9 @@ const BCRYPT_ROUNDS = 12;
 const ACCESS_TOKEN_EXPIRY = '15m';
 const REFRESH_TOKEN_EXPIRY = '8h';
 
+/** Refresh token lifetime in seconds — shared with cookie maxAge */
+export const REFRESH_TOKEN_EXPIRY_SECONDS = 8 * 60 * 60;
+
 export interface AccessTokenPayload {
   sub: number;
   role: 'employee' | 'manager';
@@ -56,6 +59,9 @@ export function verifyAccessToken(
   const decoded = jwt.verify(token, secret, {
     algorithms: ['HS256'],
   });
+  if (typeof decoded === 'string' || typeof decoded.sub !== 'number') {
+    throw new Error('Invalid access token payload');
+  }
   return decoded as unknown as AccessTokenPayload;
 }
 
@@ -66,5 +72,8 @@ export function verifyRefreshToken(
   const decoded = jwt.verify(token, secret, {
     algorithms: ['HS256'],
   });
+  if (typeof decoded === 'string' || typeof decoded.sub !== 'number') {
+    throw new Error('Invalid refresh token payload');
+  }
   return decoded as unknown as RefreshTokenPayload;
 }

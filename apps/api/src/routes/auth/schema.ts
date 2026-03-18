@@ -14,7 +14,7 @@ export const loginSchema = {
     required: ['email', 'password'],
     properties: {
       email: { type: 'string' as const, format: 'email' },
-      password: { type: 'string' as const, minLength: 1 },
+      password: { type: 'string' as const, minLength: 1, maxLength: 128 },
     },
     additionalProperties: false,
   },
