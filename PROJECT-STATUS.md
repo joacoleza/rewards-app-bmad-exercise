@@ -14,6 +14,8 @@
 | 1.6 | Frontend Login & Protected Routing | **Done** ✅ |
 | 1.7 | E2E Tests — Authentication & Protected Routing | **Backlog** |
 
+**Latest review:** Story 1.6 code review completed on 2026-03-18 — all 4 follow-up patch findings have now been fixed and validated.
+
 ## Epic Progress
 
 | Epic | Stories | Status |
@@ -39,7 +41,7 @@
 - **Login Page**: Form with blur/submit validation, auto-refresh token restore, error handling
 - **Routing**: React Router with 6 routes; ProtectedRoute checks auth + role; auto-redirect
 - **State**: AuthContext (React Context for auth), TanStack Query client for server state
-- **API Client**: Fetch wrapper with automatic 401 → refresh → retry interceptor
+- **API Client**: Fetch wrapper with automatic 401 → refresh → retry interceptor and auth-expiry event handling on failed refresh
 - **Error Handling**: Centralized `{ error, message, field, statusCode }` shape on all API errors
 - **Testing**: Vitest with 113 passing tests across all packages (51 API + 28 DB + 34 web); Playwright e2e suite scoped in Story 1.7
 - **E2E Coverage**: Playwright e2e acceptance criteria added to all 14 pending stories (Epics 2–5) + new Story 1.7 for Epic 1 auth flows
@@ -66,4 +68,4 @@ Story specs live in [_bmad-output/implementation-artifacts/](_bmad-output/implem
 - [**Story 1.3**](_bmad-output/implementation-artifacts/1-3-backend-authentication-api.md) — Backend Authentication API ✅
 - [**Story 1.4**](_bmad-output/implementation-artifacts/1-4-backend-role-based-access-control.md) — Backend Role-Based Access Control ✅
 - [**Story 1.5**](_bmad-output/implementation-artifacts/1-5-frontend-app-shell-and-design-system.md) — Frontend App Shell & Design System ✅
-- [**Story 1.6**](_bmad-output/implementation-artifacts/1-6-frontend-login-and-protected-routing.md) — Frontend Login & Protected Routing ✅
+- [**Story 1.6**](_bmad-output/implementation-artifacts/1-6-frontend-login-and-protected-routing.md) — Frontend Login & Protected Routing ✅ (code review completed; follow-up fixes applied and validated)

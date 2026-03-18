@@ -149,7 +149,10 @@ export default async function authRoutes(fastify: FastifyInstance) {
         fastify.config.JWT_SECRET,
       );
 
-      return reply.send({ accessToken });
+      return reply.send({
+        accessToken,
+        user: { id: user.id, email: user.email, role: user.role },
+      });
     } catch {
       reply.clearCookie(REFRESH_COOKIE_NAME, cookieOpts);
       return reply.status(401).send({

@@ -1,10 +1,23 @@
 const API_BASE = '/api';
 
-interface ApiError {
+export const AUTH_EXPIRED_EVENT = 'auth:expired';
+
+export interface ApiError {
   error: string;
   message: string;
   field: string | null;
   statusCode: number;
+}
+
+export interface AuthUser {
+  id: number;
+  email: string;
+  role: 'employee' | 'manager';
+}
+
+export interface AuthSession {
+  accessToken: string;
+  user: AuthUser;
 }
 
 let accessToken: string | null = null;
@@ -30,16 +43,26 @@ async function handleResponse<T>(response: Response): Promise<T> {
   return response.json();
 }
 
-async function refreshAccessToken(): Promise<string | null> {
+function dispatchAuthExpired() {
+  setAccessToken(null);
+
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event(AUTH_EXPIRED_EVENT));
+  }
+}
+
+export async function refreshSessionApi(): Promise<AuthSession | null> {
   try {
     const res = await fetch(`${API_BASE}/auth/refresh`, {
       method: 'POST',
       credentials: 'include',
     });
     if (!res.ok) return null;
-    const { accessToken: newToken } = await res.json();
-    setAccessToken(newToken);
-    return newToken;
+
+    const session = (await res.json()) as AuthSession;
+    setAccessToken(session.accessToken);
+
+    return session;
   } catch {
     return null;
   }
@@ -66,14 +89,16 @@ async function fetchWithAuth<T>(
 
   // Auto-refresh on 401
   if (response.status === 401 && accessToken) {
-    const newToken = await refreshAccessToken();
-    if (newToken) {
-      headers['Authorization'] = `Bearer ${newToken}`;
+    const session = await refreshSessionApi();
+    if (session) {
+      headers['Authorization'] = `Bearer ${session.accessToken}`;
       response = await fetch(`${API_BASE}${url}`, {
         ...options,
         headers,
         credentials: 'include',
       });
+    } else {
+      dispatchAuthExpired();
     }
   }
 
@@ -102,10 +127,7 @@ export async function loginApi(email: string, password: string) {
     credentials: 'include',
     body: JSON.stringify({ email, password }),
   });
-  return handleResponse<{
-    accessToken: string;
-    user: { id: number; email: string; role: 'employee' | 'manager' };
-  }>(res);
+  return handleResponse<AuthSession>(res);
 }
 
 // Logout

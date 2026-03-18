@@ -196,6 +196,11 @@ describe('POST /api/auth/refresh', () => {
 
     expect(res.statusCode).toBe(200);
     expect(res.json().accessToken).toBeDefined();
+    expect(res.json().user).toEqual({
+      id: 1,
+      email: 'admin@bmad.com',
+      role: 'manager',
+    });
   });
 
   it('returns 401 without refresh cookie', async () => {

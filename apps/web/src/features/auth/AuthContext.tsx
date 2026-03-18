@@ -6,13 +6,14 @@ import {
   useEffect,
   type ReactNode,
 } from 'react';
-import { loginApi, logoutApi, setAccessToken } from '@/lib/api';
-
-interface AuthUser {
-  id: number;
-  email: string;
-  role: 'employee' | 'manager';
-}
+import {
+  AUTH_EXPIRED_EVENT,
+  type AuthUser,
+  loginApi,
+  logoutApi,
+  refreshSessionApi,
+  setAccessToken,
+} from '@/lib/api';
 
 interface AuthContextType {
   user: AuthUser | null;
@@ -32,16 +33,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     async function tryRestore() {
       try {
-        const res = await fetch('/api/auth/refresh', {
-          method: 'POST',
-          credentials: 'include',
-        });
-        if (res.ok) {
-          const { accessToken } = await res.json();
-          setAccessToken(accessToken);
-          // Decode JWT to get user info (base64 payload)
-          const payload = JSON.parse(atob(accessToken.split('.')[1]));
-          setUser({ id: payload.sub, email: '', role: payload.role });
+        const session = await refreshSessionApi();
+
+        if (session) {
+          setUser(session.user);
         }
       } catch {
         // No valid session — stay unauthenticated
@@ -52,6 +47,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     tryRestore();
   }, []);
 
+  useEffect(() => {
+    function handleAuthExpired() {
+      setUser(null);
+    }
+
+    window.addEventListener(AUTH_EXPIRED_EVENT, handleAuthExpired);
+
+    return () => {
+      window.removeEventListener(AUTH_EXPIRED_EVENT, handleAuthExpired);
+    };
+  }, []);
+
   const login = useCallback(async (email: string, password: string) => {
     const result = await loginApi(email, password);
     setAccessToken(result.accessToken);
@@ -59,8 +66,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const logout = useCallback(async () => {
-    await logoutApi();
-    setUser(null);
+    try {
+      await logoutApi();
+    } finally {
+      setAccessToken(null);
+      setUser(null);
+    }
   }, []);
 
   return (

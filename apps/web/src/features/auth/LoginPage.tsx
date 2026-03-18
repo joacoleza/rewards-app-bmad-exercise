@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
+const INVALID_CREDENTIALS_MESSAGE = 'Invalid email or password';
+
 export function LoginPage() {
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -47,6 +49,8 @@ export function LoginPage() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const validationErrors = validate();
+    setTouchedEmail((current) => current || Boolean(validationErrors.email));
+    setTouchedPassword((current) => current || Boolean(validationErrors.password));
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length > 0) {
@@ -63,11 +67,22 @@ export function LoginPage() {
       await login(email, password);
       navigate('/dashboard', { replace: true });
     } catch (err: unknown) {
-      const apiErr = err as { message?: string; field?: string };
-      if (apiErr.field) {
-        setErrors({ [apiErr.field]: apiErr.message });
+      const apiErr = err as {
+        message?: string;
+        field?: 'email' | 'password';
+        statusCode?: number;
+      };
+
+      if (apiErr.statusCode === 401) {
+        setErrors({ general: INVALID_CREDENTIALS_MESSAGE });
+      } else if (apiErr.field === 'email') {
+        setTouchedEmail(true);
+        setErrors({ email: apiErr.message });
+      } else if (apiErr.field === 'password') {
+        setTouchedPassword(true);
+        setErrors({ password: apiErr.message });
       } else {
-        setErrors({ general: apiErr.message || 'Invalid email or password' });
+        setErrors({ general: apiErr.message || INVALID_CREDENTIALS_MESSAGE });
       }
     } finally {
       setIsSubmitting(false);
@@ -151,7 +166,7 @@ export function LoginPage() {
             <Button
               type="submit"
               className="w-full"
-              disabled={isSubmitting || !email.trim() || !password}
+              disabled={isSubmitting}
             >
               {isSubmitting ? (
                 <span className="inline-flex items-center gap-2">

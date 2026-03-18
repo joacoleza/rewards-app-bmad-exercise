@@ -7,7 +7,7 @@
 ![BMAD](https://img.shields.io/badge/BMAD-v6.2.0-purple)
 ![Stories](https://img.shields.io/badge/stories-6%2F22_(27%25)-yellow)
 
-Employee peer-recognition and rewards web app built using the [BMAD methodology](https://github.com/bmadcode/BMAD-METHOD) (v6.2.0). Employees nominate peers for meaningful contributions, managers approve nominations, and rewards are issued as gift cards.
+Employee peer-recognition and rewards web app built using the [BMAD methodology](https://github.com/bmadcode/BMAD-METHOD) (`v6.2.0`). Employees nominate peers for meaningful contributions, managers approve nominations, and rewards are issued as gift cards.
 
 ## Project Status
 
@@ -23,22 +23,24 @@ Epic 5 — Audit Trail        ░░░░░░░░░░  0/3
 
 **Latest completed:** Story 1.6 — Frontend Login & Protected Routing
 
+**Latest review:** Story 1.6 code review completed on 2026-03-18 — 4 follow-up patch findings fixed and validated
+
 **Next up:** Story 1.7 — E2E Tests — Authentication & Protected Routing
 
-See [PROJECT-STATUS.md](PROJECT-STATUS.md) for full details.
+See [PROJECT-STATUS.md](PROJECT-STATUS.md) for full details and the Story 1.6 review summary.
 
 ## Tech Stack
 
 - [**React 19**](https://react.dev/) — Frontend UI library
 - [**Vite 6**](https://vite.dev/) — Frontend build tool with HMR
-- [**shadcn/ui**](https://ui.shadcn.com/) — Component library (Tailwind CSS + Radix UI) _(Story 1.5)_
+- [**shadcn/ui**](https://ui.shadcn.com/) — Component library (Tailwind CSS + Radix UI)
 - [**Fastify 5**](https://fastify.dev/) — Backend API framework
 - [**Drizzle ORM 0.45**](https://orm.drizzle.team/) — TypeScript-first SQL ORM
 - [**PostgreSQL 16+**](https://www.postgresql.org/) — Relational database
 - [**Turborepo 2.8**](https://turbo.build/) — Monorepo build orchestration
 - [**pnpm**](https://pnpm.io/) — Package manager
 - [**Vitest**](https://vitest.dev/) — Unit & integration testing
-- [**Playwright**](https://playwright.dev/) — End-to-end testing _(Story 1.7)_
+- [**Playwright**](https://playwright.dev/) — End-to-end testing
 - [**Docker Compose**](https://docs.docker.com/compose/) — Local development environment
 
 For detailed architecture decisions and rationale, see the [architecture document](_bmad-output/planning-artifacts/architecture.md).

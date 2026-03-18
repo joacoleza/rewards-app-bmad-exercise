@@ -44,6 +44,14 @@ export const refreshSchema = {
       type: 'object' as const,
       properties: {
         accessToken: { type: 'string' as const },
+        user: {
+          type: 'object' as const,
+          properties: {
+            id: { type: 'number' as const },
+            email: { type: 'string' as const },
+            role: { type: 'string' as const, enum: ['employee', 'manager'] },
+          },
+        },
       },
     },
     401: errorResponseSchema,
